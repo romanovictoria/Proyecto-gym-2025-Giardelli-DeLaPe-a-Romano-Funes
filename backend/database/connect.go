@@ -55,14 +55,14 @@ func insertarDatosIniciales() {
 		Nombre:   "Jorge Sebastian",
 		Apellido: "Rodriguez",
 		Email:    "jsrodriguez@gmail.com",
-		Rol:      "socio",
+		Rol:      false,
 	})
 
 	usuario.InsertarUsuario(model.Usuario{
 		Nombre:   "Jose",
 		Apellido: "De la Pena",
 		Email:    "josedlp3@gmail.com",
-		Rol:      "socio",
+		Rol:      false,
 	})
 
 	// Categorías
@@ -76,7 +76,7 @@ func insertarDatosIniciales() {
 
 	// Actividades
 	actividad.InsertarActividad(model.Actividad{
-		Titulo:      "Musculación",
+		Nombre:      "Musculación",
 		Descripcion: "Profesor Nahuel",
 		Horario:     time.Date(2025, 5, 21, 19, 0, 0, 0, time.Local), // 21 de mayo de 2025 a las 19:00
 		Cupo:        50,

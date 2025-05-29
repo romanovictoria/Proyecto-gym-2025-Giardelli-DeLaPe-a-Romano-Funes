@@ -9,4 +9,6 @@ type ActividadDto struct {
 	Cupo                 int    `json:"cupo"`
 }
 
+// Falta horario
+
 type ActividadesDto []ActividadDto
