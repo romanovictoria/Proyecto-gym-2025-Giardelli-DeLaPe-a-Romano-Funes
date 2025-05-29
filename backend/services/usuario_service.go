@@ -1,12 +1,12 @@
 package services
 
 import (
+	usuarioCliente "Proyecto-gym/clients/usuario"
+	"Proyecto-gym/dto"
+	"Proyecto-gym/model"
+	e "Proyecto-gym/utils"
 	"crypto/sha256"
 	"encoding/hex"
-	usuarioCliente "proyecto-gym/clients/usuario"
-	"proyecto-gym/dto"
-	"proyecto-gym/model"
-	e "proyecto-gym/utils/errors"
 )
 
 type usuarioService struct{}

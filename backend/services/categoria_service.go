@@ -1,10 +1,10 @@
 package services
 
 import (
-	categoriaCliente "proyecto-gym/clients/categoria"
-	"proyecto-gym/dto"
-	"proyecto-gym/model"
-	e "proyecto-gym/utils/errors"
+	categoriaCliente "Proyecto-gym/clients/categoria"
+	"Proyecto-gym/dto"
+	"Proyecto-gym/model"
+	e "Proyecto-gym/utils"
 )
 
 type categoriaService struct{}

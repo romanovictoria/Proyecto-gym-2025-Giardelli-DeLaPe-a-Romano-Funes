@@ -1,12 +1,12 @@
 package services
 
 import (
-	actividadCliente "proyecto-gym/clients/actividad"
-	inscripcionCliente "proyecto-gym/clients/inscripcion"
-	usuarioCliente "proyecto-gym/clients/usuario"
-	"proyecto-gym/dto"
-	"proyecto-gym/model"
-	e "proyecto-gym/utils/errors"
+	actividadCliente "Proyecto-gym/clients/actividad"
+	inscripcionCliente "Proyecto-gym/clients/inscripcion"
+	usuarioCliente "Proyecto-gym/clients/usuario"
+	"Proyecto-gym/dto"
+	"Proyecto-gym/model"
+	e "Proyecto-gym/utils"
 	"time"
 )
 
