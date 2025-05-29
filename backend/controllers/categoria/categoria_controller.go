@@ -1,10 +1,10 @@
 package categoriaController
 
 import (
+	"Proyecto-gym/dto"
+	service "Proyecto-gym/services"
 	"net/http"
 	"strconv"
-	"ucc-gorm/dto"
-	service "ucc-gorm/services"
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"

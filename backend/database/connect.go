@@ -5,11 +5,11 @@ import (
 
 	"time"
 
-	"github.com/romanovictoria/Proyecto-gym-2025-Giardelli-DeLaPe-a-Romano-Funes/clients/actividad"
-	"github.com/romanovictoria/Proyecto-gym-2025-Giardelli-DeLaPe-a-Romano-Funes/clients/categoria"
-	"github.com/romanovictoria/Proyecto-gym-2025-Giardelli-DeLaPe-a-Romano-Funes/clients/inscripcion"
-	"github.com/romanovictoria/Proyecto-gym-2025-Giardelli-DeLaPe-a-Romano-Funes/clients/usuario"
-	"github.com/romanovictoria/Proyecto-gym-2025-Giardelli-DeLaPe-a-Romano-Funes/models"
+	"Proyecto-gym/clients/actividad"
+	"Proyecto-gym/clients/categoria"
+	"Proyecto-gym/clients/inscripcion"
+	"Proyecto-gym/clients/usuario"
+	"Proyecto-gym/model"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"

@@ -3,10 +3,10 @@ package app
 import (
 	// Controladores
 
-	inscripcionController "proyecto-gym/controllers/inscripcion"
-	usuarioController "proyecto-gym/controllers/usuario"
+	inscripcionController "Proyecto-gym/controllers/inscripcion"
+	usuarioController "Proyecto-gym/controllers/usuario"
 
-	actividadController "proyecto-gym/backend/controllers/actividad"
+	actividadController "Proyecto-gym/controllers/actividad"
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"

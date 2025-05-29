@@ -1,7 +1,7 @@
 package usuario
 
 import (
-	"ucc-gorm/model"
+	"Proyecto-gym/model"
 
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"

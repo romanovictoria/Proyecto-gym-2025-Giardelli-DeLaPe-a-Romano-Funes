@@ -1,11 +1,11 @@
 package main
 
 import (
-	"proyecto-gym/app"
-	"proyecto-gym/database"
+	"Proyecto-gym/app"
+	"Proyecto-gym/database"
 )
 
 func main() {
-	DB.StartDbEngine()
+	database.StartDbEngine()
 	app.StartRoute()
 }

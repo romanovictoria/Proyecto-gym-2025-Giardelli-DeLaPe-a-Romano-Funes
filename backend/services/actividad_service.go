@@ -1,12 +1,12 @@
 package services
 
 import (
-	actividadCliente "proyecto-gym/clients/actividad"
-	categoriaCliente "proyecto-gym/clients/categoria"
+	actividadCliente "Proyecto-gym/clients/actividad"
+	categoriaCliente "Proyecto-gym/clients/categoria"
 
-	"proyecto-gym/dto"
-	"proyecto-gym/model"
-	e "proyecto-gym/utils/errors"
+	"Proyecto-gym/dto"
+	"Proyecto-gym/model"
+	e "Proyecto-gym/utils"
 )
 
 type actividadService struct{}

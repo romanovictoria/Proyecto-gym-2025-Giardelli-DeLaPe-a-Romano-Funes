@@ -1,9 +1,9 @@
 package usuarioController
 
 import (
+	service "Proyecto-gym/services"
 	"net/http"
 	"strconv"
-	service "ucc-gorm/services"
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
