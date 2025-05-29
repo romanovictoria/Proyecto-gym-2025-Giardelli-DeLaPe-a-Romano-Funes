@@ -18,9 +18,9 @@ func GetUsuarioDetalleById(c *gin.Context) {
 		return
 	}
 
-	usuarioDto, err := service.UsuarioService.GetUsuarioDetalleById(id)
-	if err != nil {
-		c.JSON(err.Status(), err)
+	usuarioDto, er := service.UsuarioService.GetUsuarioDetalleById(id)
+	if er != nil {
+		c.JSON(er.Status(), er)
 		return
 	}
 

@@ -19,9 +19,9 @@ func GetCategoriaById(c *gin.Context) {
 		return
 	}
 
-	categoriaDto, err := service.CategoriaService.GetCategoriaById(id)
-	if err != nil {
-		c.JSON(err.Status(), err)
+	categoriaDto, er := service.CategoriaService.GetCategoriaById(id)
+	if er != nil {
+		c.JSON(er.Status(), er)
 		return
 	}
 
@@ -38,7 +38,7 @@ func CategoriaInsert(c *gin.Context) {
 		return
 	}
 
-	categoriaDto, er := service.CategoriaService.InsertCategoria(categoriaDto)
+	categoriaDto, er := service.CategoriaService.InsertCategoria(categoriaDto) // Falta metodo insertCategoria
 	if er != nil {
 		c.JSON(er.Status(), er)
 		return
