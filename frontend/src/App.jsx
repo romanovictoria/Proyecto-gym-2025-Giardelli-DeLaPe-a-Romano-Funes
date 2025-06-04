@@ -1,26 +1,24 @@
-import { useState } from 'react'
+import { useNavigate } from "react-router-dom";
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+
+  const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+  const logout = () => {
+    localStorage.removeItem("isLoggedIn");
+    navigate("/")
+  }
 
   return (
-    <>
+    <div>
 
-      <h1>Gym Transformación</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <h2>¡Bienvenido a la Página de Inicio de Gym Transformacion!</h2>
+      <p>Explora nuestras actividades y planes.</p>
 
-export default App
+    </div>
+  );
+};
+
+export default App;
