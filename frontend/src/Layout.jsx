@@ -12,7 +12,7 @@ function Layout({ isLoggedIn, logout, navigate }) {
     return (
         <div className="layout-container">
             <header>
-                <h1>Gym Transformacion</h1>
+                <h1>Vital Gym</h1>
                 <nav>
                     <a href="/">App</a>
                     {isLoggedIn ? (
