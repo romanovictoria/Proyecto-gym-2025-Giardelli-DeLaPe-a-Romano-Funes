@@ -67,11 +67,11 @@ func insertarDatosIniciales() {
 
 	// Categorías
 	categoria.InsertarCategoria(model.Categoria{
-		Descripcion: "Categoria 1",
+		Nombre: "Categoria 1",
 	})
 
 	categoria.InsertarCategoria(model.Categoria{
-		Descripcion: "Categoria 2",
+		Nombre: "Categoria 2",
 	})
 
 	// Actividades

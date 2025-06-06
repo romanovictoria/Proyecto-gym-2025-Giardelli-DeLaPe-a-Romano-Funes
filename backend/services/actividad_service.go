@@ -37,7 +37,7 @@ func (s *actividadService) GetActividadById(id int) (dto.ActividadDto, e.ApiErro
 	actividadDto.Id = actividad.Id
 	actividadDto.Descripcion = actividad.Descripcion
 	actividadDto.Cupo = actividad.Cupo
-	actividadDto.CategoriaDescripcion = actividad.Categoria.Descripcion
+	actividadDto.CategoriaDescripcion = actividad.Categoria.Nombre
 	actividadDto.CategoriaId = actividad.Categoria.Id
 
 	return actividadDto, nil

@@ -12,6 +12,7 @@ type categoriaService struct{}
 type categoriaServiceInterface interface {
 	GetCategoriaById(id int) (dto.CategoriaDto, e.ApiError)
 	GetCategorias() ([]dto.CategoriaDto, e.ApiError)
+	InsertCategoria(categoriaService dto.CategoriaDto) (dto.CategoriaDto, e.ApiError)
 }
 
 var (
@@ -31,7 +32,7 @@ func (s *categoriaService) GetCategoriaById(id int) (dto.CategoriaDto, e.ApiErro
 	}
 
 	categoriaDto.Id = categoria.Id
-	categoriaDto.Descripcion = categoria.Descripcion
+	categoriaDto.Nombre = categoria.Nombre
 
 	return categoriaDto, nil
 }
@@ -42,10 +43,22 @@ func (s *categoriaService) GetCategorias() ([]dto.CategoriaDto, e.ApiError) {
 
 	for _, cat := range categorias {
 		categoriasDto = append(categoriasDto, dto.CategoriaDto{
-			Id:          cat.Id,
-			Descripcion: cat.Descripcion,
+			Id:     cat.Id,
+			Nombre: cat.Nombre,
 		})
 	}
 
 	return categoriasDto, nil
+}
+
+func (s *categoriaService) InsertCategoria(categoriaDto dto.CategoriaDto) (dto.CategoriaDto, e.ApiError) {
+
+	var categoria model.Categoria
+	categoria.Nombre = categoriaDto.Nombre
+
+	categoria = categoriaCliente.InsertarCategoria(categoria)
+
+	categoriaDto.Id = categoria.Id
+
+	return categoriaDto, nil
 }
