@@ -18,22 +18,17 @@ function Layout({ isLoggedIn, logout, navigate }) {
                     {isLoggedIn ? (
                         <button onClick={handleLogout}>Cerrar Sesion</button>
                     ) : (
-                        <a href="/Login">Login</a>
+                        <a href="/Login"> Login</a>
                     )}
-                    <a href="/Login">Login</a>
-                    <a href="/Activities">Actividades</a>
+                    <a href="/Activities"> Actividades</a>
                 </nav>
             </header>
 
             <main>
-                {
-                    <Outlet />
-                }
-
+                <Outlet />
             </main>
 
-            { }
-            <Footer /> { }
+            <Footer />
         </div>
     );
 }
