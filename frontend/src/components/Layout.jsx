@@ -16,7 +16,7 @@ function Layout({ isLoggedIn, logout, navigate }) {
                 <nav>
                     <a href="/">App</a>
                     {isLoggedIn ? (
-                        <button onClick={logout}>Cerrar Sesion</button>
+                        <button onClick={handleLogout}>Cerrar Sesion</button>
                     ) : (
                         <a href="/Login">Login</a>
                     )}
@@ -37,5 +37,26 @@ function Layout({ isLoggedIn, logout, navigate }) {
         </div>
     );
 }
+
+
+/*function AppAndLayoutWrapper() {
+  const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+  const logout = () => {
+    localStorage.removeItem("isLoggedIn");
+    navigate("/");
+  };
+
+  return (
+    <Layout
+      isLoggedIn={isLoggedIn}
+      logout={logout}
+      navigate={navigate}
+    >
+      <Outlet />
+    </Layout>
+  );
+}*/
 
 export default Layout;
