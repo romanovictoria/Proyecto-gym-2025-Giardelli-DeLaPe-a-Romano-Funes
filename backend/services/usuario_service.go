@@ -14,7 +14,7 @@ type usuarioService struct{}
 type usuarioServiceInterface interface {
 	GetUsuarioById(id int) (dto.UsuarioDto, e.ApiError)
 	Login(email string, password string) (dto.UsuarioDto, e.ApiError)
-	Register(userDto dto.UsuarioDto) (dto.UsuarioDto, e.ApiError)
+	Register(userDto dto.UsuarioDto, password string) (dto.UsuarioDto, e.ApiError)
 }
 
 var (
@@ -63,7 +63,7 @@ func (s *usuarioService) Login(email string, password string) (dto.UsuarioDto, e
 	return s.GetUsuarioById(usuario.Id)
 }
 
-func (s *usuarioService) Register(userDto dto.UsuarioDto) (dto.UsuarioDto, e.ApiError) {
+func (s *usuarioService) Register(userDto dto.UsuarioDto, password string) (dto.UsuarioDto, e.ApiError) { // pasar como argumento el dto + la password
 	// Verificar si el email ya existe
 	existingUser := usuarioCliente.GetUsuarioByEmail(userDto.Email)
 	if existingUser.Id != 0 {
@@ -74,13 +74,13 @@ func (s *usuarioService) Register(userDto dto.UsuarioDto) (dto.UsuarioDto, e.Api
 	usuario.Nombre = userDto.Nombre
 	usuario.Apellido = userDto.Apellido
 	usuario.Email = userDto.Email
-	usuario.Password = hashPassword(userDto.Password) // guardar hash
+	usuario.Password = hashPassword(password) // guardar hash
 	usuario.Rol = userDto.Rol
 
 	usuario = usuarioCliente.InsertUsuario(usuario)
 
 	userDto.Id = usuario.Id
-	userDto.Password = "" // No devolver la contraseña
+	//password = "" Comentado ya que no forma parte del dto por ende no se devuelve
 
 	return userDto, nil
 }
