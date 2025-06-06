@@ -3,13 +3,13 @@ import '@styles/App.css'
 
 const App = () => {
 
-  const navigate = useNavigate();
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  //const navigate = useNavigate();
+  //const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-  const logout = () => {
+  /*const logOut = () => {
     localStorage.removeItem("isLoggedIn");
     navigate("/")
-  }
+  }*/
 
   return (
     <div>
