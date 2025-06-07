@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import '@styles/index.css';
 import Login from './Login.jsx';
 import Layout from '@components/Layout.jsx';
-import App from './App.jsx';
+import Home from './Home.jsx';
 import Activities from '@components/Activities.jsx';
 
 
@@ -13,7 +13,7 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />} >
-          <Route index element={<App />} />
+          <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="activities" element={<Activities />} />
           {/* <Route path="/" element={<AppAndLayoutWrapper />} /> */}

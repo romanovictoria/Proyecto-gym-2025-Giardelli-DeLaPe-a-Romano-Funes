@@ -18,3 +18,8 @@
     display: block;
     margin: 1rem auto;
 }
+
+.login-button {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: blueviolet;
+}

@@ -10,9 +10,9 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        if (username == "admin" && password == "admin") {
+        if (username == "admin" && password == "admin") {  // aca se tiene que hacer una llamada a la API para validar el usuario y contraseña
             console.log("Login OK");
-            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem('isLoggedIn', true);
             Navigate("/actividades");
         } else {
             console.log("Login Incorrecto");
@@ -25,7 +25,7 @@ const Login = () => {
             <div>
                 <form className="login-form" onSubmit={handleLogin}>
                     <h2>
-                        Iniciar sesión
+                        Iniciar Sesión
                     </h2>
                     <input
                         type="text"
@@ -41,7 +41,7 @@ const Login = () => {
                         value={password}
                         required
                     />
-                    <button type="submit">Ingresar</button>
+                    <button className='login-button' type="submit">Ingresar</button>
                 </form>
             </div>
         </div>
