@@ -1,22 +1,34 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "@styles/Login.css";
+import { useApiRequest } from '../hooks/useApiRequest';
+
 
 const Login = () => {
-    const [username, setUsername] = useState("");
+    const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const Navigate = useNavigate();
+    const { data, error, request: fetchLogin } = useApiRequest("https://jsonplaceholder.typicode.com/users")
+
+    const body = JSON.stringify({ userName, password })
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        console.log(`login: username ${userName}, password ${password}`)
+        /* fetchLogin("ENDOPOINT DE LOGIN", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userName, password }),
+        }) */
 
-        if (username == "admin" && password == "admin") {  // aca se tiene que hacer una llamada a la API para validar el usuario y contraseña
+        /* if (userName == "admin" && password == "admin") {  // aca se tiene que hacer una llamada a la API para validar el usuario y contraseña
             console.log("Login OK");
             localStorage.setItem('isLoggedIn', true);
             Navigate("/actividades");
         } else {
             console.log("Login Incorrecto");
-        }
+        } */
     }
 
 
@@ -30,8 +42,8 @@ const Login = () => {
                     <input
                         type="text"
                         placeholder="Usuario"
-                        onChange={(e) => setUsername(e.target.value)}
-                        value={username}
+                        onChange={(e) => setUserName(e.target.value)}
+                        value={userName}
                         required
                     />
                     <input
