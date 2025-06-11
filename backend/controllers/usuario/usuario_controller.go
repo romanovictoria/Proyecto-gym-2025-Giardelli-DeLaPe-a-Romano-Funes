@@ -3,29 +3,30 @@ package usuarioController
 import (
 	service "Proyecto-gym/services"
 	"net/http"
-	"strconv"
+
+	// "strconv"
 
 	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
+	// log "github.com/sirupsen/logrus"
 )
 
-func GetUsuarioDetalleById(c *gin.Context) {
-	log.Debug("Usuario id to load: " + c.Param("id"))
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		log.Error("Invalid user ID")
-		c.JSON(http.StatusBadRequest, "Invalid user ID")
-		return
-	}
+// func GetUsuarioDetalleById(c *gin.Context) {
+// 	log.Debug("Usuario id to load: " + c.Param("id"))
+// 	id, err := strconv.Atoi(c.Param("id"))
+// 	if err != nil {
+// 		log.Error("Invalid user ID")
+// 		c.JSON(http.StatusBadRequest, "Invalid user ID")
+// 		return
+// 	}
 
-	usuarioDto, er := service.UsuarioService.GetUsuarioDetalleById(id)
-	if er != nil {
-		c.JSON(er.Status(), er)
-		return
-	}
+// 	usuarioDto, er := service.UsuarioService.GetUsuarioDetalleById(id)
+// 	if er != nil {
+// 		c.JSON(er.Status(), er)
+// 		return
+// 	}
 
-	c.JSON(http.StatusOK, usuarioDto)
-}
+// 	c.JSON(http.StatusOK, usuarioDto)
+// }
 
 func GetUsuario(c *gin.Context) {
 	usuariosDto, err := service.UsuarioService.GetUsuarios()

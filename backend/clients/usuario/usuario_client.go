@@ -28,3 +28,21 @@ func GetUsuarioById(id int) model.Usuario {
 
 	return usuario
 }
+
+func GetUsuarioByEmail(email string) model.Usuario {
+	var usuario model.Usuario
+
+	Db.Where("email = ?", email).First(&usuario)
+	log.Debug("Usuario: ", usuario)
+
+	return usuario
+}
+
+func GetUsuarios() []model.Usuario {
+	var usuarios []model.Usuario
+	Db.Order("nombre").Find(&usuarios)
+
+	log.Debug("Usuarios: ", usuarios)
+
+	return usuarios
+}

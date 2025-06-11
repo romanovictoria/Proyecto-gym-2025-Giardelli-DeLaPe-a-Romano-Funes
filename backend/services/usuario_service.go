@@ -15,6 +15,7 @@ type usuarioServiceInterface interface {
 	GetUsuarioById(id int) (dto.UsuarioDto, e.ApiError)
 	Login(email string, password string) (dto.UsuarioDto, e.ApiError)
 	Register(userDto dto.UsuarioDto, password string) (dto.UsuarioDto, e.ApiError)
+	GetUsuarios() ([]dto.UsuarioDto, e.ApiError)
 }
 
 var (
@@ -77,10 +78,29 @@ func (s *usuarioService) Register(userDto dto.UsuarioDto, password string) (dto.
 	usuario.Password = hashPassword(password) // guardar hash
 	usuario.Rol = userDto.Rol
 
-	usuario = usuarioCliente.InsertUsuario(usuario)
+	// usuario = usuarioCliente.InsertUsuario(usuario)
 
 	userDto.Id = usuario.Id
 	//password = "" Comentado ya que no forma parte del dto por ende no se devuelve
 
 	return userDto, nil
+}
+
+// func (s *usuarioService) GetUsuarioDetalleById
+
+func (s *usuarioService) GetUsuarios() ([]dto.UsuarioDto, e.ApiError) {
+	usuarios := usuarioCliente.GetUsuarios()
+	var usuariosDto []dto.UsuarioDto
+
+	for _, user := range usuarios {
+		usuariosDto = append(usuariosDto, dto.UsuarioDto{
+			Id:       user.Id,
+			Nombre:   user.Nombre,
+			Apellido: user.Apellido,
+			Email:    user.Email,
+			Rol:      user.Rol,
+		})
+	}
+
+	return usuariosDto, nil
 }
