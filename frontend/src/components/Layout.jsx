@@ -4,16 +4,16 @@ import Footer from './Footer.jsx';
 
 function Layout({ isLoggedIn, logout, navigate }) {
 
-  const handleLogout = () => {
+  /* const handleLogout = () => {
     logout();
     navigate("/");
-  };
+  }; */
 
   return (
     <div className="layout-container">
       <header>
         <h1>Vital Gym</h1>
-        <nav>
+        {/* <nav>
           <a href="/">App</a>
           {isLoggedIn ? (
             <button onClick={handleLogout}>Cerrar Sesion</button>
@@ -21,7 +21,7 @@ function Layout({ isLoggedIn, logout, navigate }) {
             <a href="/Login"> Login</a>
           )}
           <a href="/Activities"> Actividades</a>
-        </nav>
+        </nav> */}
       </header>
 
       <main>
