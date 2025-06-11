@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "@styles/Login.css";
 import { useApiRequest } from '../hooks/useApiRequest';
+import { showToast } from '../components/Toast';
 
 
 const Login = () => {
@@ -16,6 +17,8 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         console.log(`login: username ${userName}, password ${password}`)
+        showToast(`Bienvenido ${userName}`)
+        showToast(`Credenciales invalidas`, "error")
         /* fetchLogin("ENDOPOINT DE LOGIN", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
