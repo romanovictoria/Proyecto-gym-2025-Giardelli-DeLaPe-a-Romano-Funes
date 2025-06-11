@@ -28,7 +28,7 @@ func MapUrls() {
 	Router.GET("/actividad/:id", actividadController.GetActividadById)
 
 	// Rutas Usuario
-	Router.GET("/usuario/:id", usuarioController.GetUsuarioDetalleById)
+	// Router.GET("/usuario/:id", usuarioController.GetUsuarioDetalleById)
 	Router.GET("/usuario", usuarioController.GetUsuario)
 
 	// Rutas Barrio (ejemplo si usas)
