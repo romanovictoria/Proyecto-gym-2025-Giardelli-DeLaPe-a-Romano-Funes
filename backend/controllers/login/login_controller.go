@@ -2,23 +2,28 @@ package loginController
 
 import (
 	"Proyecto-gym/dto"
-	"Proyecto-gym/services"
+	services "Proyecto-gym/services"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 )
 
 func PostLogin(c *gin.Context) {
 	var loginDto dto.LoginDto
+	var loginResponse dto.LoginResponseDto
+	err := c.BindJSON(&loginDto)
 
 	// Validar el JSON de entrada
-	if err := c.ShouldBindJSON(&loginDto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err != nil {
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	// Llamar al servicio de login
-	loginResponse, apiErr := services.UsuarioService.Login(loginDto.Email, loginDto.Password)
+	log.Debug("Llamando a GetUsuarioByEmail con: ", loginDto.Email)
+	loginResponse, apiErr := services.UsuarioService.Login(loginDto)
 	if apiErr != nil {
 		c.JSON(apiErr.Status(), apiErr)
 		return

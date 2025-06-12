@@ -9,7 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func GetUsuario(c *gin.Context) {
+func GetUsuarios(c *gin.Context) {
 	var usuariosDto dto.UsuariosDto
 	usuariosDto, err := service.UsuarioService.GetUsuarios()
 	if err != nil {

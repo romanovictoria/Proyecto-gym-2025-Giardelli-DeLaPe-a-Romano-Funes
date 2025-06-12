@@ -6,13 +6,15 @@ import (
 	"Proyecto-gym/model"
 	"Proyecto-gym/utils"
 	e "Proyecto-gym/utils"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type usuarioService struct{}
 
 type usuarioServiceInterface interface {
 	GetUsuarioById(id int) (dto.UsuarioDto, e.ApiError)
-	Login(email string, password string) (dto.LoginResponseDto, e.ApiError)
+	Login(loginDto dto.LoginDto) (dto.LoginResponseDto, e.ApiError)
 	Register(userDto dto.UsuarioDto, password string) (dto.UsuarioDto, e.ApiError)
 	GetUsuarios() (dto.UsuariosDto, e.ApiError)
 }
@@ -42,25 +44,29 @@ func (s *usuarioService) GetUsuarioById(id int) (dto.UsuarioDto, e.ApiError) {
 	return usuarioDto, nil
 }
 
-func (s *usuarioService) Login(email string, password string) (dto.LoginResponseDto, e.ApiError) {
-	var usuario model.Usuario = usuarioCliente.GetUsuarioByEmail(email)
-	if usuario.Id == 0 {
+func (s *usuarioService) Login(loginDto dto.LoginDto) (dto.LoginResponseDto, e.ApiError) {
+	var usuario model.Usuario
+	usuario.Email = loginDto.Email
+	usuario.Password = loginDto.Password
+	log.Debug("Llamando a GetUsuarioByEmail con: ", usuario.Email)
+	var usuarioEncontrado model.Usuario = usuarioCliente.GetUsuarioByEmail(usuario.Email)
+	if usuarioEncontrado.Id == 0 {
 		return dto.LoginResponseDto{}, e.NewUnauthorizedApiError("usuario o contraseña incorrectos")
 	}
 
 	// Usar bcrypt para verificar la contraseña
-	if err := utils.CheckPasswordHash(usuario.Password, password); err != nil {
+	if err := utils.CheckPasswordHash(usuarioEncontrado.Password, usuario.Password); err != nil {
 		return dto.LoginResponseDto{}, e.NewUnauthorizedApiError("usuario o contraseña incorrectos")
 	}
 
 	// Generar JWT
-	token, err := utils.GenerateJWT(usuario.Email, usuario.Rol)
+	token, err := utils.GenerateJWT(usuarioEncontrado.Email, usuario.Rol)
 	if err != nil {
 		return dto.LoginResponseDto{}, e.NewInternalServerApiError("error generando token", err)
 	}
 
 	// Obtener los datos del usuario
-	usuarioDto, apiErr := s.GetUsuarioById(usuario.Id)
+	usuarioDto, apiErr := s.GetUsuarioById(usuarioEncontrado.Id)
 	if apiErr != nil {
 		return dto.LoginResponseDto{}, apiErr
 	}

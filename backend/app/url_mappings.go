@@ -13,21 +13,23 @@ import (
 // MapUrls configura todas las rutas de la aplicación
 func MapUrls() {
 	// Rutas Inscripción
+	router.GET("/usuario/:id/inscripcion", inscripcionController.GetInscripcionesUser)
 	router.GET("/inscripcion/:id", inscripcionController.GetInscripcionById)
-	router.POST("/inscripcion", inscripcionController.RegistrarInscripcion)
+	router.POST("/inscripcion", inscripcionController.RegistrarInscripcion) // CASI
 
 	// Rutas Actividad
-	router.POST("/actividad", actividadController.ActividadInsert)
-	router.GET("/actividad/:id", actividadController.GetActividadById)
+	router.GET("/actividad", actividadController.GetActividades)       // Listo
+	router.POST("/actividad", actividadController.ActividadInsert)     // Listo
+	router.GET("/actividad/:id", actividadController.GetActividadById) // Listo
 	router.PUT("/actividad/:id", actividadController.GetActividadById)
-	router.DELETE("/actividad/:id", actividadController.GetActividadById)
+	router.DELETE("/actividad/:id", actividadController.GetActividadById) // Listo
 
 	// Rutas Usuario
-	router.GET("/usuario", usuarioController.GetUsuario)
-	router.POST("/usuario", usuarioController.CreateUsuario) // ✅ Ruta agregada para POST
+	router.GET("/usuario", usuarioController.GetUsuarios)    // Listo
+	router.POST("/usuario", usuarioController.CreateUsuario) // Listo
 
 	// Ruta de Login
-	router.POST("/login", loginController.PostLogin)
+	router.POST("/login", loginController.PostLogin) // Listo
 
 	log.Info("Finishing mappings configurations")
 }
