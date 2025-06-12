@@ -15,6 +15,7 @@ type inscripcionService struct{}
 type inscripcionServiceInterface interface {
 	GetInscripcionById(id int) (dto.InscripcionDto, e.ApiError)
 	RegistrarInscripcion(inscripcionDto dto.InscripcionDto) (dto.InscripcionDto, e.ApiError)
+	GetInscripcionesUser(id int) (dto.InscripcionesDto, e.ApiError)
 }
 
 var (
@@ -35,7 +36,9 @@ func (s *inscripcionService) GetInscripcionById(id int) (dto.InscripcionDto, e.A
 	}
 
 	inscripcionDto.Id = inscripcion.Id
+	inscripcionDto.UsuarioId = inscripcion.UsuarioId
 	inscripcionDto.UsuarioNombre = inscripcion.Usuario.Nombre
+	inscripcionDto.ActividadId = inscripcion.Actividad.Id
 	inscripcionDto.ActividadNombre = inscripcion.Actividad.Nombre
 
 	return inscripcionDto, nil
@@ -61,4 +64,24 @@ func (s *inscripcionService) RegistrarInscripcion(inscripcionDto dto.Inscripcion
 	inscripcionDto.Id = inscripcion.Id
 
 	return inscripcionDto, nil
+}
+
+func (s *inscripcionService) GetInscripcionesUser(id int) (dto.InscripcionesDto, e.ApiError) {
+	var inscripciones model.Inscripciones = inscripcionCliente.GetInscripcionesUser(id)
+	var inscripcionesDto dto.InscripcionesDto
+
+	for _, inscripcion := range inscripciones {
+		var inscripcionDto dto.InscripcionDto
+
+		inscripcionDto.Id = inscripcion.Id
+		inscripcionDto.UsuarioNombre = inscripcion.Usuario.Nombre
+		inscripcionDto.UsuarioId = inscripcion.UsuarioId
+		inscripcionDto.ActividadId = inscripcion.ActividadId
+		inscripcionDto.ActividadNombre = inscripcion.Actividad.Nombre
+		inscripcionDto.Fecha = inscripcion.Fecha
+
+		inscripcionesDto = append(inscripcionesDto, inscripcionDto)
+	}
+
+	return inscripcionesDto, nil
 }
