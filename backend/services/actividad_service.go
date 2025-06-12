@@ -14,6 +14,7 @@ type actividadService struct{}
 type actividadServiceInterface interface {
 	GetActividadById(id int) (dto.ActividadDto, e.ApiError)
 	InsertActividad(actividadDto dto.ActividadDto) (dto.ActividadDto, e.ApiError)
+	GetActividades() (dto.ActividadesDto, e.ApiError)
 }
 
 var (
@@ -22,6 +23,26 @@ var (
 
 func init() {
 	ActividadService = &actividadService{}
+}
+
+func (s *actividadService) GetActividades() (dto.ActividadesDto, e.ApiError) {
+	var actividades model.Actividades = actividadCliente.GetActividades()
+	var actividadesDto dto.ActividadesDto
+
+	for _, actividad := range actividades {
+		var actividadDto dto.ActividadDto
+
+		actividadDto.Id = actividad.Id
+		actividadDto.Nombre = actividad.Nombre
+		actividadDto.Descripcion = actividad.Descripcion
+		actividadDto.CategoriaId = actividad.CategoriaId
+		actividadDto.Horario = actividad.Horario.Unix()
+		actividadDto.Cupo = actividad.Cupo
+
+		actividadesDto = append(actividadesDto, actividadDto)
+	}
+
+	return actividadesDto, nil
 }
 
 func (s *actividadService) GetActividadById(id int) (dto.ActividadDto, e.ApiError) {

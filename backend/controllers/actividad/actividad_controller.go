@@ -10,6 +10,16 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+func GetActividades(c *gin.Context) {
+	var actividadesDto dto.ActividadesDto
+	actividadesDto, err := service.ActividadService.GetActividades()
+	if err != nil {
+		c.JSON(err.Status(), err)
+		return
+	}
+	c.JSON(http.StatusOK, actividadesDto)
+}
+
 func GetActividadById(c *gin.Context) {
 	log.Debug("Actividad id to load: " + c.Param("id"))
 	id, _ := strconv.Atoi(c.Param("id"))
