@@ -2,23 +2,21 @@ package app
 
 import (
 	// Controladores
-
-	inscripcionController "Proyecto-gym/controllers/inscripcion"
-	usuarioController "Proyecto-gym/controllers/usuario"
-
 	actividadController "Proyecto-gym/controllers/actividad"
+	inscripcionController "Proyecto-gym/controllers/inscripcion"
+	loginController "Proyecto-gym/controllers/login"
+	usuarioController "Proyecto-gym/controllers/usuario"
 
 	log "github.com/sirupsen/logrus"
 )
 
 // MapUrls configura todas las rutas de la aplicación
 func MapUrls() {
-	// Rutas Inscripcion
+	// Rutas Inscripción
 	router.GET("/inscripcion/:id", inscripcionController.GetInscripcionById)
 	router.POST("/inscripcion", inscripcionController.RegistrarInscripcion)
 
 	// Rutas Actividad
-	// Router.GET("/actividad", actividadController.GetActividad)
 	router.POST("/actividad", actividadController.ActividadInsert)
 	router.GET("/actividad/:id", actividadController.GetActividadById)
 	router.PUT("/actividad/:id", actividadController.GetActividadById)
@@ -26,11 +24,10 @@ func MapUrls() {
 
 	// Rutas Usuario
 	router.GET("/usuario", usuarioController.GetUsuario)
-	// Router.GET("/usuario/:id", usuarioController.TODO)
-	// Router.POST("/users/login", usuarioController.TODO)
-	// Router.POST("/users/register", usuarioController.TODO)
+	router.POST("/usuario", usuarioController.CreateUsuario) // ✅ Ruta agregada para POST
 
-	// Rutas Barrio (ejemplo si usas)
+	// Ruta de Login
+	router.POST("/login", loginController.PostLogin)
 
 	log.Info("Finishing mappings configurations")
 }
