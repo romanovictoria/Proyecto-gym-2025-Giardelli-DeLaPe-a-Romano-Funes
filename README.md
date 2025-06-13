@@ -8,3 +8,6 @@
 | Ana Rosario | Funes G. | 2304151|
 | Francisco | Giardelli | 2437019 |
 | Victoria | Romano | 1507374 |
+
+PARA LEVANTAR EL FRONT -> npm install react-toastify / npm run dev
+
