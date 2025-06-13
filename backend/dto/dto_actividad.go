@@ -7,8 +7,9 @@ type ActividadDto struct {
 	CategoriaId          int    `json:"categoria_id"`
 	CategoriaDescripcion string `json:"categoria_descripcion"`
 	Cupo                 int    `json:"cupo"`
+	Horario              int64  `json:"horario"`
 }
 
-// Falta horario
+// Falta horario TODO
 
 type ActividadesDto []ActividadDto

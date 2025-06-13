@@ -9,6 +9,15 @@ import (
 
 var Db *gorm.DB
 
+func GetActividades() model.Actividades {
+	var actividades model.Actividades
+	Db.Order("id").Find(&actividades)
+
+	log.Debug("Actividades: ", actividades)
+
+	return actividades
+}
+
 func GetActividadById(id int) model.Actividad {
 	var actividad model.Actividad
 

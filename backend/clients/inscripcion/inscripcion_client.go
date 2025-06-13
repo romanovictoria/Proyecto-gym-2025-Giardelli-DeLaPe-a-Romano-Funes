@@ -28,3 +28,11 @@ func GetInscripcionById(id int) model.Inscripcion {
 
 	return inscripcion
 }
+
+func GetInscripcionesUser(id int) model.Inscripciones {
+	var Inscripciones model.Inscripciones
+	Db.Where("usuario_id = ?", id).Preload("Usuario").Preload("Actividad").Find(&Inscripciones)
+	log.Debug("Actividades del Usuario Buscado: ", Inscripciones)
+
+	return Inscripciones
+}

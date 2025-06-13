@@ -16,7 +16,7 @@ func InsertarUsuario(usuario model.Usuario) model.Usuario {
 		//TODO Manage Errors
 		log.Error("")
 	}
-	log.Debug("Usuario Created: ", usuario.Id)
+	log.Debug("Usuario Created: ", usuario)
 	return usuario
 }
 
@@ -38,9 +38,9 @@ func GetUsuarioByEmail(email string) model.Usuario {
 	return usuario
 }
 
-func GetUsuarios() []model.Usuario {
-	var usuarios []model.Usuario
-	Db.Order("nombre").Find(&usuarios)
+func GetUsuarios() model.Usuarios {
+	var usuarios model.Usuarios
+	Db.Order("id").Find(&usuarios)
 
 	log.Debug("Usuarios: ", usuarios)
 

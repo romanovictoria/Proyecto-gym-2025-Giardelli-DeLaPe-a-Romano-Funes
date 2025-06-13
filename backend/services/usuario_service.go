@@ -4,18 +4,19 @@ import (
 	usuarioCliente "Proyecto-gym/clients/usuario"
 	"Proyecto-gym/dto"
 	"Proyecto-gym/model"
+	"Proyecto-gym/utils"
 	e "Proyecto-gym/utils"
-	"crypto/sha256"
-	"encoding/hex"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type usuarioService struct{}
 
 type usuarioServiceInterface interface {
 	GetUsuarioById(id int) (dto.UsuarioDto, e.ApiError)
-	Login(email string, password string) (dto.UsuarioDto, e.ApiError)
+	Login(loginDto dto.LoginDto) (dto.LoginResponseDto, e.ApiError)
 	Register(userDto dto.UsuarioDto, password string) (dto.UsuarioDto, e.ApiError)
-	GetUsuarios() ([]dto.UsuarioDto, e.ApiError)
+	GetUsuarios() (dto.UsuariosDto, e.ApiError)
 }
 
 var (
@@ -24,11 +25,6 @@ var (
 
 func init() {
 	UsuarioService = &usuarioService{}
-}
-
-func hashPassword(password string) string {
-	hash := sha256.Sum256([]byte(password))
-	return hex.EncodeToString(hash[:])
 }
 
 func (s *usuarioService) GetUsuarioById(id int) (dto.UsuarioDto, e.ApiError) {
@@ -48,58 +44,84 @@ func (s *usuarioService) GetUsuarioById(id int) (dto.UsuarioDto, e.ApiError) {
 	return usuarioDto, nil
 }
 
-func (s *usuarioService) Login(email string, password string) (dto.UsuarioDto, e.ApiError) {
-	var usuario model.Usuario = usuarioCliente.GetUsuarioByEmail(email)
-	if usuario.Id == 0 {
-		return dto.UsuarioDto{}, e.NewUnauthorizedApiError("usuario o contraseña incorrectos")
+func (s *usuarioService) Login(loginDto dto.LoginDto) (dto.LoginResponseDto, e.ApiError) {
+	var usuario model.Usuario
+	usuario.Email = loginDto.Email
+	usuario.Password = loginDto.Password
+	log.Debug("Llamando a GetUsuarioByEmail con: ", usuario.Email)
+	var usuarioEncontrado model.Usuario = usuarioCliente.GetUsuarioByEmail(usuario.Email)
+	if usuarioEncontrado.Id == 0 {
+		return dto.LoginResponseDto{}, e.NewUnauthorizedApiError("usuario o contraseña incorrectos")
 	}
 
-	hashedPass := hashPassword(password)
-	if usuario.Password != hashedPass {
-		return dto.UsuarioDto{}, e.NewUnauthorizedApiError("usuario o contraseña incorrectos")
+	// Usar bcrypt para verificar la contraseña
+	if err := utils.CheckPasswordHash(usuarioEncontrado.Password, usuario.Password); err != nil {
+		return dto.LoginResponseDto{}, e.NewUnauthorizedApiError("usuario o contraseña incorrectos")
 	}
 
-	// Aquí iría la lógica para generar JWT, etc.
+	// Generar JWT
+	token, err := utils.GenerateJWT(usuarioEncontrado.Email, usuario.Rol)
+	if err != nil {
+		return dto.LoginResponseDto{}, e.NewInternalServerApiError("error generando token", err)
+	}
 
-	return s.GetUsuarioById(usuario.Id)
+	// Obtener los datos del usuario
+	usuarioDto, apiErr := s.GetUsuarioById(usuarioEncontrado.Id)
+	if apiErr != nil {
+		return dto.LoginResponseDto{}, apiErr
+	}
+
+	// Crear response con usuario y token
+	loginResponse := dto.LoginResponseDto{
+		Usuario: usuarioDto,
+		Token:   token,
+	}
+
+	return loginResponse, nil
 }
 
-func (s *usuarioService) Register(userDto dto.UsuarioDto, password string) (dto.UsuarioDto, e.ApiError) { // pasar como argumento el dto + la password
+func (s *usuarioService) Register(userDto dto.UsuarioDto, password string) (dto.UsuarioDto, e.ApiError) {
 	// Verificar si el email ya existe
 	existingUser := usuarioCliente.GetUsuarioByEmail(userDto.Email)
 	if existingUser.Id != 0 {
 		return dto.UsuarioDto{}, e.NewBadRequestApiError("email ya registrado")
 	}
 
+	// Hashear la contraseña con bcrypt
+	hashedPassword, err := utils.HashPassword(password)
+	if err != nil {
+		return dto.UsuarioDto{}, e.NewInternalServerApiError("error hasheando contraseña", err)
+	}
+
 	var usuario model.Usuario
 	usuario.Nombre = userDto.Nombre
 	usuario.Apellido = userDto.Apellido
 	usuario.Email = userDto.Email
-	usuario.Password = hashPassword(password) // guardar hash
+	usuario.Password = hashedPassword
 	usuario.Rol = userDto.Rol
 
-	// usuario = usuarioCliente.InsertUsuario(usuario)
+	// CORRECCIÓN: Cambiar InsertUsuario por InsertarUsuario
+	usuario = usuarioCliente.InsertarUsuario(usuario)
 
 	userDto.Id = usuario.Id
-	//password = "" Comentado ya que no forma parte del dto por ende no se devuelve
 
 	return userDto, nil
 }
 
-// func (s *usuarioService) GetUsuarioDetalleById
-
-func (s *usuarioService) GetUsuarios() ([]dto.UsuarioDto, e.ApiError) {
-	usuarios := usuarioCliente.GetUsuarios()
-	var usuariosDto []dto.UsuarioDto
+func (s *usuarioService) GetUsuarios() (dto.UsuariosDto, e.ApiError) {
+	var usuarios model.Usuarios = usuarioCliente.GetUsuarios()
+	var usuariosDto dto.UsuariosDto
 
 	for _, user := range usuarios {
-		usuariosDto = append(usuariosDto, dto.UsuarioDto{
-			Id:       user.Id,
-			Nombre:   user.Nombre,
-			Apellido: user.Apellido,
-			Email:    user.Email,
-			Rol:      user.Rol,
-		})
+		var usuarioDto dto.UsuarioDto
+
+		usuarioDto.Id = user.Id
+		usuarioDto.Nombre = user.Nombre
+		usuarioDto.Apellido = user.Apellido
+		usuarioDto.Email = user.Email
+		usuarioDto.Rol = user.Rol
+
+		usuariosDto = append(usuariosDto, usuarioDto)
 	}
 
 	return usuariosDto, nil

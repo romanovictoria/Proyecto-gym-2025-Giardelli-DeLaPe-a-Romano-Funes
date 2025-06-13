@@ -46,3 +46,18 @@ func GetInscripcionById(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, inscripcionDto)
 }
+
+func GetInscripcionesUser(c *gin.Context) {
+	log.Debug("Inscripcion id to load: " + c.Param("id"))
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	var inscripcionesDto dto.InscripcionesDto
+
+	inscripcionesDto, err := service.InscripcionService.GetInscripcionesUser(id)
+
+	if err != nil {
+		c.JSON(err.Status(), err)
+		return
+	}
+	c.JSON(http.StatusOK, inscripcionesDto)
+}
