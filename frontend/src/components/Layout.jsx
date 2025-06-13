@@ -36,10 +36,6 @@ function Layout({ isLoggedIn, logout, navigate }) {
 
 /* BARRA DE BUSQUEDA:
   
-
-  import React, { Fragment } from "react";
-  import { useState } from "react";
-
   const Search = ({ history }) => {
   const [keyword, setKeyword] = useState(""); //keyword: contiene lo que el usuario escribe en la barra; setKeyword:funcion para actualizar ese valor
 
@@ -54,16 +50,16 @@ function Layout({ isLoggedIn, logout, navigate }) {
 
   return (
     <Fragment>
-      <div className="md:my-[200px] my-40 mx-10 md:mx-80 md:min-h-[400px]">
+      <div className="barraBusqueda">
         <form className="" onSubmit={searchSubmitHandler}>
           <label
             for="default-search"
-            className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
+            className="labelBusqueda"
           >
             Search
           </label>
           <div className="relative">
-            <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">// pointer-events-none evita que el icono interfiera con clics
+            <div className="pointerLupa">// pointer-events-none evita que el icono interfiera con clics
               <svg // es el icono de la lupa
                 aria-hidden="true"
                 className="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -82,14 +78,14 @@ function Layout({ isLoggedIn, logout, navigate }) {
             </div>
             <input // ACA EL USUARIO ESCRIBE
               type="text"
-              className="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+              className="escribeBusqueda"
               placeholder="Search a actividades" //texto guia cuando está vacio.
               required="" //no permite enviar vacio
               onChange={(e) => setKeyword(e.target.value)}
               
             />
             <input type="submit"  value="Search" //boton de busqueda
-              className="text-white absolute right-2.5 bottom-2.5 bg-[#2d4a59] hover:bg-[#467890] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 cursor-pointer" />
+              className="botonBusqueda" />
            
            
           </div>
@@ -108,23 +104,6 @@ OTRA OPCION DE BARRA DE BUSQUEDA:
     <input type="text" name="search" placeholder="Buscar"/>
     {searchIcon}
   </div>
-
-
-  .searchbox{
-    position: relative;
-    left:5vmax;
-  }
-  
-  .searchbox >input{
-    border: none;
-    border-botton: 1px solid nombre del color,
-    width: 15vmax;
-    font-size: 1.1vmax;
-    outline:none;
-    color: nombre del color;
-    font-weight: 100;
-  }
-
 */
 
 

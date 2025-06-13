@@ -6,3 +6,74 @@
     text-align: center;
     background-color: hsl(0, 42%, 30%);
 }
+
+
+.barraBusqueda {
+    margin: 200px auto 40px auto;
+    padding: 0 10px;
+    min-height: 400px;
+    font-family: 'Times New Roman', Times, serif;
+    background-color: rgb(245, 251, 251);
+}
+
+.labelBusqueda {
+    margin-bottom: 2px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(128, 128, 128, 0.87);
+}
+
+.pointerLupa {
+    display: flex;
+    position: absolute;
+    inset-y: 0;
+    left: 0;
+    items-center: center;
+    padding-left: 3px;
+    pointer-events: none;
+}
+
+.escribeBusqueda {
+    display: block;
+    padding: 4px;
+    padding-left: 10px;
+    width: 100%;
+    font-size: 14px;
+    color: #1a202c;
+    background-color: rgb(243, 241, 241);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.botonBusqueda {
+    color: white;
+    position: absolute;
+    right: 2.5;
+    bottom: 2.5;
+    background-color: #2d4a59;
+    font-weight: medium;
+}
+
+.botonBusqueda:hover {
+    /* pseudoclase, efecto de que cambia el color cuando pasa el mouse*/
+    background-color: #467890;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 255, .5);
+}
+
+
+/*PARA LA OTRA OPCION DE BUSQUEDA*/
+.searchbox {
+    position: relative;
+    left: 5vmax;
+}
+
+.searchbox>input {
+    border: none;
+    border-bottom: 1px solid black;
+    width: 15vmax;
+    font-size: 1.1vmax;
+    outline: none;
+    color: black;
+    font-weight: 100;
+}
