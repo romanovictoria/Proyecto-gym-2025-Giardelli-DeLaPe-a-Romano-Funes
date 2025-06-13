@@ -15,6 +15,11 @@ const RouterApp = () => {
         <BrowserRouter>
             <Routes>
 
+                <Route element={<PublicLayout />}>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="*" element={<Navigate to="/login" />} />
+                </Route>
+
                 <Route element={<PrivateLayout />}>
                     <Route path="/home" element={<Home />} />
                     <Route path="/home/:nombre" element={<Nombre />}/>
@@ -23,12 +28,6 @@ const RouterApp = () => {
                     <Route path="/home/id/:id" element={<Detalle />}/>
                     <Route path="*" element={<Navigate to="/home" />} />
                 </Route>
-
-                <Route element={<PublicLayout />}>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="*" element={<Navigate to="/login" />} />
-                </Route>
-
             </Routes>
         </BrowserRouter>
     );
