@@ -1,5 +1,6 @@
 import "@styles/Home.css";
 import { useState, useEffect } from "react";
+import { showToast } from "../components/Toast";
 
 const Home = () => {
   const [actividades, setActividades] = useState([]);
@@ -56,11 +57,11 @@ const Home = () => {
     }
 
     const data = await response.json();
-    alert("¡Inscripción exitosa!"); // TODO TOASTADA
+   showToast("Inscripcion Aceptada", "success"); 
     console.log("Inscripción:", data);
   } catch (error) {
     console.error("Error en la inscripción:", error);
-    alert("Hubo un problema con la inscripción.");
+    showToast("Inscripcion rechazada", "error");
   }
 };
 
