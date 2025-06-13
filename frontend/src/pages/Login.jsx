@@ -41,7 +41,7 @@ const Login = () => {
       showToast("credenciales invalidas", "error");
       localStorage.setItem("isAdmin", false);
       localStorage.setItem("token", "");
-      // Aquí podés agregar la lógica para el caso de login fallido
+      // Aquí se puede agregar la lógica para el caso de login fallido
     }
   }, [loginResponse, error]);
 
