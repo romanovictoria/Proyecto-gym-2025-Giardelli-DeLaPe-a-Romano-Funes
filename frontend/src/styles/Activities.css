@@ -1,0 +1,9 @@
+.activities-conteiner {
+    display: flex;
+    gap: 1rem;
+    justify-content: center
+}
+
+.ActivityItem {
+    margin-bottom: 15px;
+}
