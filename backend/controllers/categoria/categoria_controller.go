@@ -10,6 +10,16 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+func GetCategorias(c *gin.Context) {
+	var categoriaDto dto.CategoriasDto
+	categoriaDto, err := service.CategoriaService.GetCategorias()
+	if err != nil {
+		c.JSON(err.Status(), err)
+		return
+	}
+	c.JSON(http.StatusOK, categoriaDto)
+}
+
 func GetCategoriaById(c *gin.Context) {
 	log.Debug("Categoria id to load: " + c.Param("id"))
 	id, err := strconv.Atoi(c.Param("id"))

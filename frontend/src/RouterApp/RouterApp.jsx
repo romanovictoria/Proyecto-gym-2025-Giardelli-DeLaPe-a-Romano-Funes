@@ -3,6 +3,9 @@ import Login from "../pages/Login";
 import Home from "../pages/Home";
 import PrivateLayout from "../pages/Layout/PrivateLayout";
 import PublicLayout from "../pages/Layout/PublicLayout";
+import Nombre from "../pages/FiltroNombre";
+import Categoria from "../pages/FiltroCategoria";
+import Horario from "../pages/FiltroHorario";
 
 
 
@@ -14,6 +17,9 @@ const RouterApp = () => {
 
                 <Route element={<PrivateLayout />}>
                     <Route path="/home" element={<Home />} />
+                    <Route path="/home/:nombre" element={<Nombre />}/>
+                    <Route path="/home/:categoria" element={<Categoria />}/>
+                    <Route path="/home/:horario" element={<Horario />}/>
                     <Route path="*" element={<Navigate to="/home" />} />
                 </Route>
 

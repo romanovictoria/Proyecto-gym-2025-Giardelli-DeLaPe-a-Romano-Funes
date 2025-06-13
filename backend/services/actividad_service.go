@@ -3,6 +3,7 @@ package services
 import (
 	actividadCliente "Proyecto-gym/clients/actividad"
 	categoriaCliente "Proyecto-gym/clients/categoria"
+	usuarioClient "Proyecto-gym/clients/usuario"
 
 	"Proyecto-gym/dto"
 	"Proyecto-gym/model"
@@ -38,8 +39,11 @@ func (s *actividadService) GetActividades() (dto.ActividadesDto, e.ApiError) {
 		actividadDto.Nombre = actividad.Nombre
 		actividadDto.Descripcion = actividad.Descripcion
 		actividadDto.CategoriaId = actividad.CategoriaId
-		actividadDto.Horario = actividad.Horario.Unix()
+		actividadDto.CategoriaDescripcion = actividad.Categoria.Nombre
+		actividadDto.Horario = actividad.Horario
 		actividadDto.Cupo = actividad.Cupo
+		actividadDto.ProfesorId = actividad.ProfesorId
+		actividadDto.ProfesorNombre = actividad.Profesor.Nombre
 
 		actividadesDto = append(actividadesDto, actividadDto)
 	}
@@ -72,6 +76,8 @@ func (s *actividadService) GetActividadById(id int) (dto.ActividadDto, e.ApiErro
 	actividadDto.Cupo = actividad.Cupo
 	actividadDto.CategoriaDescripcion = actividad.Categoria.Nombre
 	actividadDto.CategoriaId = actividad.Categoria.Id
+	actividadDto.ProfesorNombre = actividad.Profesor.Nombre
+	actividadDto.ProfesorId = actividad.Profesor.Id
 
 	return actividadDto, nil
 }
@@ -96,11 +102,13 @@ func (s *actividadService) PutActividadById(id int, reemplazo dto.ActividadDto) 
 	}
 
 	if reemplazo.CategoriaId != 0 {
-		actividad.Categoria.Id = reemplazo.CategoriaId
+		actividad.CategoriaId = reemplazo.CategoriaId
+		actividad.Categoria = categoriaCliente.GetCategoriaById(reemplazo.CategoriaId) // TEST
 	}
 
-	if reemplazo.CategoriaDescripcion != "" {
-		actividad.Categoria.Nombre = reemplazo.CategoriaDescripcion
+	if reemplazo.ProfesorId != 0 {
+		actividad.ProfesorId = reemplazo.ProfesorId
+		actividad.Profesor = usuarioClient.GetUsuarioById(reemplazo.ProfesorId) // TEST
 	}
 
 	actividad = actividadCliente.SaveActividad(actividad)
@@ -118,15 +126,16 @@ func (s *actividadService) PutActividadById(id int, reemplazo dto.ActividadDto) 
 func (s *actividadService) InsertActividad(actividadDto dto.ActividadDto) (dto.ActividadDto, e.ApiError) {
 
 	var actividad model.Actividad
-	var categoria model.Categoria
+
 	actividad.Nombre = actividadDto.Nombre
 	actividad.Descripcion = actividadDto.Descripcion
 	actividad.Cupo = actividadDto.Cupo
+	actividad.Horario = actividadDto.Horario
 
-	categoria = categoriaCliente.GetCategoriaById(actividadDto.CategoriaId)
-
+	var categoria model.Categoria = categoriaCliente.GetCategoriaById(actividadDto.CategoriaId)
 	actividad.Categoria = categoria
-	actividad.CategoriaId = categoria.Id
+	var usuario model.Usuario = usuarioClient.GetUsuarioById(actividadDto.ProfesorId)
+	actividad.Profesor = usuario
 
 	actividad = actividadCliente.InsertActividad(actividad)
 

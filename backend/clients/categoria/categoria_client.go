@@ -31,7 +31,7 @@ func InsertarCategoria(categoria model.Categoria) model.Categoria {
 
 func GetCategorias() model.Categorias {
 	var categorias model.Categorias
-	Db.Order("descripcion").Find(&categorias)
+	Db.Order("nombre").Find(&categorias)
 
 	log.Debug("Barrios: ", categorias)
 
