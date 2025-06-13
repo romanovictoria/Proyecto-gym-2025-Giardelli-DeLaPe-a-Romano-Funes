@@ -25,7 +25,7 @@ const FitroCategoria = () => {
     };
 
     const actividadesFiltradas = actividades.filter(actividad => 
-    actividad.categoria.toLowerCase().includes(categoria.toLowerCase())
+    actividad.categoria_descripcion === categoria
   );
 
     return (

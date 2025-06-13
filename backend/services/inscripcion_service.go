@@ -61,6 +61,9 @@ func (s *inscripcionService) RegistrarInscripcion(inscripcionDto dto.Inscripcion
 	inscripcion.Fecha = formatted
 	inscripcion = inscripcionCliente.RegistrarInscripcion(inscripcion)
 
+	inscripcionDto.ActividadNombre = inscripcion.Actividad.Nombre
+	inscripcionDto.UsuarioNombre = inscripcion.Usuario.Nombre
+
 	inscripcionDto.Id = inscripcion.Id
 
 	return inscripcionDto, nil

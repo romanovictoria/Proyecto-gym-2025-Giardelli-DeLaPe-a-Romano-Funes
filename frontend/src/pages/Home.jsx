@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 const Home = () => {
   const [actividades, setActividades] = useState([]);
   const [categorias, setCategoria] = useState([]);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
+  const [fechaHora, setFechaHora] = useState('');
 
   useEffect(() => {
     const isAdmin = localStorage.getItem("isAdmin");
@@ -55,8 +57,10 @@ const Home = () => {
           Buscar
         </button>
 
-        {/* Filtro por categoría TODO slider */}
+        {/* Filtro por categoría*/}
         <select
+          value={categoriaSeleccionada}
+          onChange={(e) => setCategoriaSeleccionada(e.target.value)}
           type="text"
           placeholder="Buscar por categoría"
           className="filtro_input_categoria"
@@ -71,22 +75,29 @@ const Home = () => {
         ))
         }
         </select>
-        <button onClick={() => window.location.href = `/home/${categoriaInput.value}`} style={{ marginRight: '20px', padding: '5px 10px' }}>
+        <button onClick={() => window.location.href = `/home/categoria/${categoriaSeleccionada}`} style={{ marginRight: '20px', padding: '5px 10px' }}>
           Buscar
         </button>
         
 
-        {/* Filtro por horario TODO input */}
+        {/* Filtro por horario TODO calendar */}
         <input
-          type="text"
-          placeholder="Buscar por horario (ej: 13/06/2025)"
+          type="datetime-local"
+          value={fechaHora}
+          onChange={(e) => setFechaHora(e.target.value)}
           className="filtro_input_horario"
-          id="horario"
           style={{ marginRight: '10px', padding: '5px' }}
         />
-        <button onClick={() => window.location.href = `/home/${horario.value}`} style={{ padding: '5px 10px' }}>
+
+        <button
+          onClick={() => {
+            if (!fechaHora) return;
+            const horario = Math.floor(new Date(fechaHora).getTime() / 1000); // en segundos
+            window.location.href = `/home/horario/${horario}`;
+          }}
+          style={{ padding: '5px 10px' }}>
           Buscar
-        </button>
+          </button>
       </div>
 
       <div className="actividad_caracteristica">

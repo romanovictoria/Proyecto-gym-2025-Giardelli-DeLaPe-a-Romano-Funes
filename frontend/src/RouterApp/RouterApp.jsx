@@ -18,8 +18,8 @@ const RouterApp = () => {
                 <Route element={<PrivateLayout />}>
                     <Route path="/home" element={<Home />} />
                     <Route path="/home/:nombre" element={<Nombre />}/>
-                    <Route path="/home/:categoria" element={<Categoria />}/>
-                    <Route path="/home/:horario" element={<Horario />}/>
+                    <Route path="/home/categoria/:categoria" element={<Categoria />}/>
+                    <Route path="/home/horario/:horario" element={<Horario />}/>
                     <Route path="/home/id/:id" element={<Detalle />}/>
                     <Route path="*" element={<Navigate to="/home" />} />
                 </Route>
@@ -35,16 +35,3 @@ const RouterApp = () => {
 };
 
 export default RouterApp;
-
-
-{/* <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />} >
-          <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="activities" element={<Activities />} />
-          {/* <Route path="/" element={<AppAndLayoutWrapper />} />}
-        </Route>
-      </Routes>
-    </BrowserRouter>
- */}

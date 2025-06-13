@@ -31,6 +31,7 @@ func MapUrls() {
 
 	// Rutas Categoria
 	router.GET("/categoria", categoriaController.GetCategorias)
+	// TODO router.GET("/categoria", categoriaController.GetCategorias)
 
 	// Ruta de Login
 	router.POST("/login", loginController.PostLogin) // Listo

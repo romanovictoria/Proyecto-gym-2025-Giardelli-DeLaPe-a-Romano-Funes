@@ -38,9 +38,25 @@ const FitroId = () => {
             {actividadesFiltradas.length > 0 ? (
                 actividadesFiltradas.map((actividad) => (
                 <li key={actividad.id} style={{ marginBottom: '15px' }}>
-                    <p><strong>Título:</strong> {actividad.nombre}</p>
-                    <p><strong>Horario:</strong> {new Date(actividad.horario * 1000).toLocaleString()}</p>
-                    {/* <p>Profesor: {actividad.usuario.nombre}</p> */}
+                    <p>
+                    <strong>Nombre:</strong> {actividad.nombre}
+                    </p>
+                    <p>
+                    <strong>Descripcion:</strong> {actividad.descripcion}
+                    </p>
+                    <p>
+                    <strong>Categoria:</strong> {actividad.categoria}
+                    </p>
+                    <p>
+                    <strong>Horario:</strong>{" "}
+                    {new Date(actividad.horario * 1000).toLocaleString()}
+                    </p>
+                    <p>
+                    <strong>Cupo:</strong> {actividad.cupo}
+                    </p>
+                    <p>
+                    <strong>Profesor:</strong> {actividad.usuario_nombre}
+                    </p>
                 </li>
                 ))
             ) : (

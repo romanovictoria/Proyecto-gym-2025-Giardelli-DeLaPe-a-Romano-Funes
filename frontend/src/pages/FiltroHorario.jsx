@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom';
 
 const FitroHorario = () => {
     const { horario } = useParams();
+    console.log(horario)
     const [actividades, setActividades] = useState([]);
 
     useEffect(() => {
@@ -25,8 +26,7 @@ const FitroHorario = () => {
     };
 
     const actividadesFiltradas = actividades.filter(actividad => 
-    actividad.horario.toLowerCase().includes(horario.toLowerCase()) // TODO 
-  );
+    actividad.horario === parseInt(horario));
 
     return (
         <div>
