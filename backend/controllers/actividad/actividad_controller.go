@@ -77,3 +77,16 @@ func PutActividadById(c *gin.Context) {
 
 	c.JSON(http.StatusOK, actividadDto)
 }
+
+func DeleteActividadById(c *gin.Context) {
+	log.Debug("Actividad id to load: " + c.Param("id"))
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	err := service.ActividadService.DeleteActividadById(id)
+
+	if err != nil {
+		c.JSON(err.Status(), err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"Alerta": "Actividad eliminada correctamente"})
+}

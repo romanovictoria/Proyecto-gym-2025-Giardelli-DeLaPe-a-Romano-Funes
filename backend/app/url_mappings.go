@@ -18,11 +18,11 @@ func MapUrls() {
 	router.POST("/inscripcion", inscripcionController.RegistrarInscripcion)            // 	Listo
 
 	// Rutas Actividad
-	router.GET("/actividad", actividadController.GetActividades)       // Listo
-	router.POST("/actividad", actividadController.ActividadInsert)     // Listo
-	router.GET("/actividad/:id", actividadController.GetActividadById) // Listo
-	router.PUT("/actividad/:id", actividadController.PutActividadById)
-	router.DELETE("/actividad/:id", actividadController.GetActividadById) // Listo
+	router.GET("/actividad", actividadController.GetActividades)             // Listo
+	router.POST("/actividad", actividadController.ActividadInsert)           // Listo
+	router.GET("/actividad/:id", actividadController.GetActividadById)       // Listo
+	router.PUT("/actividad/:id", actividadController.PutActividadById)       // Listo
+	router.DELETE("/actividad/:id", actividadController.DeleteActividadById) // Listo
 
 	// Rutas Usuario
 	router.GET("/usuario", usuarioController.GetUsuarios)    // Listo

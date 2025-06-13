@@ -27,6 +27,14 @@ func GetActividadById(id int) model.Actividad {
 	return actividad
 }
 
+func DeleteActividadById(actividad model.Actividad) {
+
+	Db.Delete(&actividad)
+
+	log.Debug("Actividad Borrada: ", actividad)
+
+}
+
 func SaveActividad(actividad model.Actividad) model.Actividad {
 	result := Db.Save(&actividad)
 

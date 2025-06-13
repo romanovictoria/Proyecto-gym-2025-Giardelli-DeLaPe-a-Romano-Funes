@@ -16,6 +16,7 @@ type actividadServiceInterface interface {
 	InsertActividad(actividadDto dto.ActividadDto) (dto.ActividadDto, e.ApiError)
 	GetActividades() (dto.ActividadesDto, e.ApiError)
 	PutActividadById(id int, reemplazo dto.ActividadDto) (dto.ActividadDto, e.ApiError)
+	DeleteActividadById(id int) e.ApiError
 }
 
 var (
@@ -44,6 +45,16 @@ func (s *actividadService) GetActividades() (dto.ActividadesDto, e.ApiError) {
 	}
 
 	return actividadesDto, nil
+}
+func (s *actividadService) DeleteActividadById(id int) e.ApiError {
+
+	if id != 0 {
+		var actividad model.Actividad = actividadCliente.GetActividadById(id)
+		actividadCliente.DeleteActividadById(actividad)
+	} else {
+		return e.NewBadRequestApiError("actividad not found")
+	}
+	return nil
 }
 
 func (s *actividadService) GetActividadById(id int) (dto.ActividadDto, e.ApiError) {
