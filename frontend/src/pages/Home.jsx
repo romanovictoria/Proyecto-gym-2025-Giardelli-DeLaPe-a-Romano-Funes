@@ -36,6 +36,35 @@ const Home = () => {
     }
   };
 
+  const funcionInscripcion = async (actividadId) => {
+  try {
+    const usuarioId = localStorage.getItem("usuario_id"); // o de donde lo tengas
+
+    const response = await fetch("http://localhost:8080/inscripcion", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        usuario_id: parseInt(usuarioId),
+        actividad_id: parseInt(actividadId),
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al inscribirse");
+    }
+
+    const data = await response.json();
+    alert("¡Inscripción exitosa!"); // TODO TOASTADA
+    console.log("Inscripción:", data);
+  } catch (error) {
+    console.error("Error en la inscripción:", error);
+    alert("Hubo un problema con la inscripción.");
+  }
+};
+
+
   return (
     <div>
       <div>
@@ -111,6 +140,9 @@ const Home = () => {
               <p>Profesor: {actividad.usuario_nombre}</p>
               <button onClick={() => window.location.href = `/home/id/${actividad.id}`} style={{ padding: '5px 10px' }}>
                 Detalles
+              </button>
+              <button onClick={() => funcionInscripcion(actividad.id)} style={{ padding: '5px 10px' }}>
+                Inscripción
               </button>
             </li>
             ))

@@ -30,6 +30,8 @@ const Login = () => {
   useEffect(() => {
     if (loginResponse?.token) {
       localStorage.setItem("token", loginResponse?.token);
+      const usuarioId = loginResponse?.usuario.id;
+      localStorage.setItem("usuario_id", usuarioId);
 
       const isAdmin = loginResponse?.usuario.rol;
       localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
