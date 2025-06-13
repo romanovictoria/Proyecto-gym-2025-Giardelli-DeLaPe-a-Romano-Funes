@@ -6,8 +6,8 @@ type ActividadDto struct {
 	Id                   int    `json:"id"`
 	CategoriaId          int    `json:"categoria_id"`
 	CategoriaDescripcion string `json:"categoria_descripcion"`
-	ProfesorId           int    `json:"profesor_id"`
-	ProfesorNombre       string `json:"profesor_nombre"`
+	UsuarioId            int    `json:"usuario_id"`
+	UsuarioNombre        string `json:"usuario_nombre"`
 	Cupo                 int    `json:"cupo"`
 	Horario              int64  `json:"horario"`
 }

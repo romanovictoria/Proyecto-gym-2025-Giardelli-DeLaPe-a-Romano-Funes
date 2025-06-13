@@ -42,8 +42,8 @@ func (s *actividadService) GetActividades() (dto.ActividadesDto, e.ApiError) {
 		actividadDto.CategoriaDescripcion = actividad.Categoria.Nombre
 		actividadDto.Horario = actividad.Horario
 		actividadDto.Cupo = actividad.Cupo
-		actividadDto.ProfesorId = actividad.ProfesorId
-		actividadDto.ProfesorNombre = actividad.Profesor.Nombre
+		actividadDto.UsuarioId = actividad.UsuarioId
+		actividadDto.UsuarioNombre = actividad.Usuario.Nombre
 
 		actividadesDto = append(actividadesDto, actividadDto)
 	}
@@ -76,8 +76,8 @@ func (s *actividadService) GetActividadById(id int) (dto.ActividadDto, e.ApiErro
 	actividadDto.Cupo = actividad.Cupo
 	actividadDto.CategoriaDescripcion = actividad.Categoria.Nombre
 	actividadDto.CategoriaId = actividad.Categoria.Id
-	actividadDto.ProfesorNombre = actividad.Profesor.Nombre
-	actividadDto.ProfesorId = actividad.Profesor.Id
+	actividadDto.UsuarioNombre = actividad.Usuario.Nombre
+	actividadDto.UsuarioId = actividad.Usuario.Id
 
 	return actividadDto, nil
 }
@@ -106,9 +106,9 @@ func (s *actividadService) PutActividadById(id int, reemplazo dto.ActividadDto) 
 		actividad.Categoria = categoriaCliente.GetCategoriaById(reemplazo.CategoriaId) // TEST
 	}
 
-	if reemplazo.ProfesorId != 0 {
-		actividad.ProfesorId = reemplazo.ProfesorId
-		actividad.Profesor = usuarioClient.GetUsuarioById(reemplazo.ProfesorId) // TEST
+	if reemplazo.UsuarioId != 0 {
+		actividad.UsuarioId = reemplazo.UsuarioId
+		actividad.Usuario = usuarioClient.GetUsuarioById(reemplazo.UsuarioId) // TEST
 	}
 
 	actividad = actividadCliente.SaveActividad(actividad)
@@ -134,8 +134,10 @@ func (s *actividadService) InsertActividad(actividadDto dto.ActividadDto) (dto.A
 
 	var categoria model.Categoria = categoriaCliente.GetCategoriaById(actividadDto.CategoriaId)
 	actividad.Categoria = categoria
-	var usuario model.Usuario = usuarioClient.GetUsuarioById(actividadDto.ProfesorId)
-	actividad.Profesor = usuario
+	actividadDto.CategoriaDescripcion = categoria.Nombre
+	var usuario model.Usuario = usuarioClient.GetUsuarioById(actividadDto.UsuarioId)
+	actividad.Usuario = usuario
+	actividadDto.UsuarioNombre = usuario.Nombre
 
 	actividad = actividadCliente.InsertActividad(actividad)
 

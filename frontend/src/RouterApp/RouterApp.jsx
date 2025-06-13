@@ -6,7 +6,7 @@ import PublicLayout from "../pages/Layout/PublicLayout";
 import Nombre from "../pages/FiltroNombre";
 import Categoria from "../pages/FiltroCategoria";
 import Horario from "../pages/FiltroHorario";
-
+import Detalle from "../pages/activityDetail";
 
 
 const RouterApp = () => {
@@ -20,6 +20,7 @@ const RouterApp = () => {
                     <Route path="/home/:nombre" element={<Nombre />}/>
                     <Route path="/home/:categoria" element={<Categoria />}/>
                     <Route path="/home/:horario" element={<Horario />}/>
+                    <Route path="/home/id/:id" element={<Detalle />}/>
                     <Route path="*" element={<Navigate to="/home" />} />
                 </Route>
 

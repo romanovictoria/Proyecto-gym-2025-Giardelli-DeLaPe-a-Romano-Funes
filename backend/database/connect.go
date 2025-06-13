@@ -5,9 +5,7 @@ import (
 	categoriaClient "Proyecto-gym/clients/categoria"
 	inscripcionClient "Proyecto-gym/clients/inscripcion"
 	usuarioClient "Proyecto-gym/clients/usuario"
-	"Proyecto-gym/dto"
 	"Proyecto-gym/model"
-	"Proyecto-gym/services"
 	"log"
 
 	"gorm.io/driver/sqlite"
@@ -78,13 +76,13 @@ func insertarDatosIniciales() {
 	categoriaClient.InsertarCategoria(newCategoria1)
 
 	// Actividades
-	newActividad := dto.ActividadDto{
+	newActividad := model.Actividad{
 		Nombre:      "Musculación",
 		Descripcion: "Profesor Nahuel",
 		Horario:     1749799118, // 21 de mayo de 2025 a las 19:00
 		Cupo:        50,
 		CategoriaId: 1,
-		ProfesorId:  2,
+		UsuarioId:   2,
 	}
-	services.ActividadService.InsertActividad(newActividad)
+	actividadClient.InsertActividad(newActividad)
 }

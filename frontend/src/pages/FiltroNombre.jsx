@@ -18,12 +18,12 @@ const FitroNombre = () => {
         try {
         const response = await fetch("http://localhost:8080/home");
         const data = await response.json();
+        console.log(data);
         setActividades(data);
         } catch (error) {
         console.error("Error al obtener actividades:", error);
         }
     };
-
     const actividadesFiltradas = actividades.filter(actividad => 
     actividad.nombre.toLowerCase().includes(nombre.toLowerCase())
   );

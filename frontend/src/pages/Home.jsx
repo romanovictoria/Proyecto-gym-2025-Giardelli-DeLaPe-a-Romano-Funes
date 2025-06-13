@@ -97,7 +97,10 @@ const Home = () => {
             <li key={actividad.id} style={{ marginBottom: '15px' }}>
               <p><strong>Título:</strong> {actividad.nombre}</p>
               <p><strong>Horario:</strong> {new Date(actividad.horario * 1000).toLocaleString()}</p>
-              {/* <p>Profesor: {actividad.usuario.nombre}</p> */}
+              <p>Profesor: {actividad.usuario_nombre}</p>
+              <button onClick={() => window.location.href = `/home/id/${actividad.id}`} style={{ padding: '5px 10px' }}>
+                Detalles
+              </button>
             </li>
             ))
           ) : (
