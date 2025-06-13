@@ -13,15 +13,15 @@ import (
 // MapUrls configura todas las rutas de la aplicación
 func MapUrls() {
 	// Rutas Inscripción
-	router.GET("/usuario/:id/inscripcion", inscripcionController.GetInscripcionesUser)
-	router.GET("/inscripcion/:id", inscripcionController.GetInscripcionById)
-	router.POST("/inscripcion", inscripcionController.RegistrarInscripcion) // CASI
+	router.GET("/usuario/:id/inscripcion", inscripcionController.GetInscripcionesUser) // 	Listo
+	router.GET("/inscripcion/:id", inscripcionController.GetInscripcionById)           // 	Listo
+	router.POST("/inscripcion", inscripcionController.RegistrarInscripcion)            // 	Listo
 
 	// Rutas Actividad
 	router.GET("/actividad", actividadController.GetActividades)       // Listo
 	router.POST("/actividad", actividadController.ActividadInsert)     // Listo
 	router.GET("/actividad/:id", actividadController.GetActividadById) // Listo
-	router.PUT("/actividad/:id", actividadController.GetActividadById)
+	router.PUT("/actividad/:id", actividadController.PutActividadById)
 	router.DELETE("/actividad/:id", actividadController.GetActividadById) // Listo
 
 	// Rutas Usuario

@@ -27,6 +27,17 @@ func GetActividadById(id int) model.Actividad {
 	return actividad
 }
 
+func SaveActividad(actividad model.Actividad) model.Actividad {
+	result := Db.Save(&actividad)
+
+	if result.Error != nil {
+		//TODO Manage Errors
+		log.Error("")
+	}
+	log.Debug("Actividad Saved: ", actividad.Id)
+	return actividad
+}
+
 func InsertActividad(actividad model.Actividad) model.Actividad {
 	result := Db.Create(&actividad)
 

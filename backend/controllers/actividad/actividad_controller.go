@@ -55,3 +55,25 @@ func ActividadInsert(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, actividadDto)
 }
+
+func PutActividadById(c *gin.Context) {
+	log.Debug("Actividad id to load: " + c.Param("id"))
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	var actividadDto dto.ActividadDto
+	err := c.BindJSON(&actividadDto)
+
+	if err != nil {
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	actividadDto, er := service.ActividadService.PutActividadById(id, actividadDto)
+	if er != nil {
+		c.JSON(er.Status(), er)
+		return
+	}
+
+	c.JSON(http.StatusOK, actividadDto)
+}

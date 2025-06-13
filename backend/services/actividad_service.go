@@ -15,6 +15,7 @@ type actividadServiceInterface interface {
 	GetActividadById(id int) (dto.ActividadDto, e.ApiError)
 	InsertActividad(actividadDto dto.ActividadDto) (dto.ActividadDto, e.ApiError)
 	GetActividades() (dto.ActividadesDto, e.ApiError)
+	PutActividadById(id int, reemplazo dto.ActividadDto) (dto.ActividadDto, e.ApiError)
 }
 
 var (
@@ -53,6 +54,45 @@ func (s *actividadService) GetActividadById(id int) (dto.ActividadDto, e.ApiErro
 	if actividad.Id == 0 {
 		return actividadDto, e.NewBadRequestApiError("actividad not found")
 	}
+
+	actividadDto.Nombre = actividad.Nombre
+	actividadDto.Id = actividad.Id
+	actividadDto.Descripcion = actividad.Descripcion
+	actividadDto.Cupo = actividad.Cupo
+	actividadDto.CategoriaDescripcion = actividad.Categoria.Nombre
+	actividadDto.CategoriaId = actividad.Categoria.Id
+
+	return actividadDto, nil
+}
+func (s *actividadService) PutActividadById(id int, reemplazo dto.ActividadDto) (dto.ActividadDto, e.ApiError) {
+
+	var actividad model.Actividad = actividadCliente.GetActividadById(id)
+	var actividadDto dto.ActividadDto
+
+	if actividad.Id == 0 {
+		return actividadDto, e.NewBadRequestApiError("actividad not found")
+	}
+	if reemplazo.Nombre != "" {
+		actividad.Nombre = reemplazo.Nombre
+	}
+
+	if reemplazo.Descripcion != "" {
+		actividad.Descripcion = reemplazo.Descripcion
+	}
+
+	if reemplazo.Cupo != 0 {
+		actividad.Cupo = reemplazo.Cupo
+	}
+
+	if reemplazo.CategoriaId != 0 {
+		actividad.Categoria.Id = reemplazo.CategoriaId
+	}
+
+	if reemplazo.CategoriaDescripcion != "" {
+		actividad.Categoria.Nombre = reemplazo.CategoriaDescripcion
+	}
+
+	actividad = actividadCliente.SaveActividad(actividad)
 
 	actividadDto.Nombre = actividad.Nombre
 	actividadDto.Id = actividad.Id
