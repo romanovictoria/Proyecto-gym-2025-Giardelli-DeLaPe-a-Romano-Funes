@@ -1,26 +1,27 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/Login";
+import Home from "../pages/Home";
 import PrivateLayout from "../pages/Layout/PrivateLayout";
 import PublicLayout from "../pages/Layout/PublicLayout";
 
 
+
 const RouterApp = () => {
-    //const isAuthenticated = false; // reemplazar por lógica real
 
     return (
         <BrowserRouter>
             <Routes>
-                {/*  {isAuthenticated ? (
-                    <Route element={<PrivateLayout />}>
-                        <Route path="/login" element={<Login />} />
-                        <Route path="*" element={<Navigate to="/home" />} />
-                    </Route>
-                ) : ( */}
-                <Route element={<PublicLayout />}>
-                    <Route path="/Login" element={<Login />} />
-                    <Route path="*" element={<Navigate to="/Login" />} />
+
+                <Route element={<PrivateLayout />}>
+                    <Route path="/home" element={<Home />} />
+                    <Route path="*" element={<Navigate to="/home" />} />
                 </Route>
-                {/*  )}*/}
+
+                <Route element={<PublicLayout />}>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="*" element={<Navigate to="/login" />} />
+                </Route>
+
             </Routes>
         </BrowserRouter>
     );

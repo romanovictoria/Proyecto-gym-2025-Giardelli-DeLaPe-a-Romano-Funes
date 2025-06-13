@@ -1,51 +1,76 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "@styles/Login.css";
+import { useApiRequest } from "../hooks/useApiRequest";
+import { showToast } from "../components/Toast";
 
 const Login = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const Navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const { data: loginResponse, error, request: fetchLogin } = useApiRequest();
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-        if (username == "admin" && password == "admin") {  // aca se tiene que hacer una llamada a la API para validar el usuario y contraseña
-            console.log("Login OK");
-            localStorage.setItem('isLoggedIn', true);
-            Navigate("/actividades");
-        } else {
-            console.log("Login Incorrecto");
-        }
+    const body = JSON.stringify({
+      email: email, // suponiendo que "userName" en realidad es el email
+      password: password,
+    });
+
+    // Hacer la petición login y obtener la respuesta
+    await fetchLogin("http://localhost:8080/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body,
+    });
+  };
+  useEffect(() => {
+    if (loginResponse?.token) {
+      localStorage.setItem("token", loginResponse?.token);
+
+      const isAdmin = loginResponse?.usuario.rol;
+      localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
+
+      showToast("Bienvenido");
+      navigate("/home");
     }
+    if (error) {
+      showToast("credenciales invalidas", "error");
+      localStorage.setItem("isAdmin", false);
+      localStorage.setItem("token", "");
+      // Aquí podés agregar la lógica para el caso de login fallido
+    }
+  }, [loginResponse, error]);
 
-
-    return (
-        <div className="login-container">
-            <div>
-                <form className="login-form" onSubmit={handleLogin}>
-                    <h2>
-                        Iniciar Sesión
-                    </h2>
-                    <input
-                        type="text"
-                        placeholder="Usuario"
-                        onChange={(e) => setUsername(e.target.value)}
-                        value={username}
-                        required
-                    />
-                    <input
-                        type="password"
-                        placeholder="Contraseña"
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
-                        required
-                    />
-                    <button className='login-button' type="submit">Ingresar</button>
-                </form>
-            </div>
-        </div>
-    )
-}
+  return (
+    <div className="login-container">
+      <div>
+        <form className="login-form" onSubmit={handleLogin}>
+          <h2>Iniciar Sesión</h2>
+          <input
+            type="text"
+            placeholder="email"
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            required
+          />
+          <button className="login-button" type="submit">
+            Ingresar
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
 
 export default Login;
