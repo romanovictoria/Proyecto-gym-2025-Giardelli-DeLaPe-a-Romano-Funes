@@ -47,8 +47,11 @@ const Home = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        inscripcion: {
         usuario_id: parseInt(usuarioId),
         actividad_id: parseInt(actividadId),
+        },
+        token: localStorage.getItem("token"),
       }),
     });
 

@@ -1,6 +1,7 @@
 import "@styles/Home.css";
 import { useState, useEffect} from "react";
 import {useParams} from 'react-router-dom';
+import { showToast } from "../components/Toast";
 
 const FitroId = () => {
     const { id } = useParams();
@@ -24,6 +25,36 @@ const FitroId = () => {
         }
     };
     const actividadesFiltradas = actividades.filter(actividad => actividad.id === parseInt(id));
+    const funcionInscripcion = async (actividadId) => {
+      try {
+        const usuarioId = localStorage.getItem("usuario_id"); // o de donde lo tengas
+    
+        const response = await fetch("http://localhost:8080/inscripcion", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            usuario_id: parseInt(usuarioId),
+            actividad_id: parseInt(actividadId),
+          }),
+        });
+    
+        if (!response.ok) {
+          throw new Error("Error al inscribirse");
+        }
+    
+        const data = await response.json();
+       showToast("Inscripcion Aceptada", "success"); 
+        console.log("Inscripción:", data);
+      } catch (error) {
+        console.error("Error en la inscripción:", error);
+        showToast("Inscripcion rechazada", "error");
+      }
+    };
+
+
+
 
     return (
         <div>
@@ -57,6 +88,9 @@ const FitroId = () => {
                     <p>
                     <strong>Profesor:</strong> {actividad.usuario_nombre}
                     </p>
+                    <button onClick={() => funcionInscripcion(actividad.id)} style={{ padding: '5px 10px' }}>
+                     Inscripción
+                     </button>
                 </li>
                 ))
             ) : (
@@ -67,5 +101,6 @@ const FitroId = () => {
         </div>
     );
     };
+
 
 export default FitroId;

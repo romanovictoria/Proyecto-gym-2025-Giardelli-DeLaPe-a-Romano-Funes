@@ -3,6 +3,7 @@ package inscripcionController
 import (
 	"Proyecto-gym/dto"
 	service "Proyecto-gym/services"
+	"Proyecto-gym/utils"
 	"net/http"
 	"strconv"
 
@@ -11,9 +12,11 @@ import (
 )
 
 func RegistrarInscripcion(c *gin.Context) {
-
-	var inscripcionDto dto.InscripcionDto
-	err := c.BindJSON(&inscripcionDto)
+	var request struct {
+		Inscripcion dto.InscripcionDto `json:"inscripcion"`
+		Token       string             `json:"token"`
+	}
+	err := c.BindJSON(&request)
 
 	// Error Parsing json param
 	if err != nil {
@@ -21,15 +24,21 @@ func RegistrarInscripcion(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
+	_, errr := utils.ValidateJWT(request.Token)
 
-	inscripcionDto, er := service.InscripcionService.RegistrarInscripcion(inscripcionDto)
-	// Error del Insert
-	if er != nil {
-		c.JSON(er.Status(), er)
+	if errr == nil {
+		inscripcionDto, er := service.InscripcionService.RegistrarInscripcion(request.Inscripcion)
+		if er != nil {
+			c.JSON(er.Status(), er)
+			return
+		}
+		c.JSON(http.StatusCreated, inscripcionDto)
 		return
 	}
+	log.Error("Error validating JWT: ", errr.Error())
+	c.JSON(http.StatusUnauthorized, gin.H{"error": "Token inválido o expirado"})
 
-	c.JSON(http.StatusCreated, inscripcionDto)
+	// Error del Insert
 }
 
 func GetInscripcionById(c *gin.Context) {
