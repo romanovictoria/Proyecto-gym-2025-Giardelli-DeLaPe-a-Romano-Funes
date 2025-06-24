@@ -52,3 +52,25 @@ body {
 .read-the-docs {
   color: #4a90e2;
 }
+
+.acti_filtro {
+  margin-bottom: '15px';
+}
+
+.actividad_filtros {
+  margin-bottom: '20px';
+}
+
+.filtro_input {
+  margin-right: '10px';
+  padding: '5px';
+}
+
+.button_buscar {
+  margin-right: '20px';
+  padding: '5px 10px';
+}
+
+.button_detalles {
+  padding: '5px 10px';
+}
