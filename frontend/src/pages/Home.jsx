@@ -7,6 +7,7 @@ const Home = () => {
   const [categorias, setCategoria] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
   const [fechaHora, setFechaHora] = useState('');
+  const [nombre, setNombre] = useState("");   // Falta definir el estado y función para el filtro por nombre
 
   useEffect(() => {
     const isAdmin = localStorage.getItem("isAdmin");
@@ -69,6 +70,8 @@ const Home = () => {
   };
 
 
+
+
   return (
     <div>
       <div>
@@ -76,7 +79,6 @@ const Home = () => {
         <p>Explora nuestras actividades y planes.</p>
       </div>
 
-      {/* Barra de búsqueda con botones */}
       <div className="actividad_filtros">
         {/* Filtro por nombre */}
         <input
@@ -84,17 +86,14 @@ const Home = () => {
           placeholder="Buscar por nombre"
           className="filtro_input"
           id="nombre"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
         />
-        <button onClick={() => window.location.href = `/home/${nombre.value}`} className="button_buscar">
-          Buscar
-        </button>
 
         {/* Filtro por categoría*/}
         <select
           value={categoriaSeleccionada}
           onChange={(e) => setCategoriaSeleccionada(e.target.value)}
-          type="text"
-          placeholder="Buscar por categoría"
           className="filtro_input"
           id="categoriaInput"
         >
@@ -103,15 +102,10 @@ const Home = () => {
             <option key={categoria.id} value={categoria.nombre}>
               {categoria.nombre}
             </option>
-          ))
-          }
+          ))}
         </select>
-        <button onClick={() => window.location.href = `/home/categoria/${categoriaSeleccionada}`} className="button_buscar">
-          Buscar
-        </button>
 
-
-        {/* Filtro por horario TODO calendar */}
+        {/* Filtro por horario */}
         <input
           type="datetime-local"
           value={fechaHora}
@@ -119,13 +113,22 @@ const Home = () => {
           className="filtro_input"
         />
 
+        {/* Botón único de búsqueda */}
         <button
           onClick={() => {
-            if (!fechaHora) return;
-            const horario = Math.floor(new Date(fechaHora).getTime() / 1000); // en segundos
-            window.location.href = `/home/horario/${horario}`;
+            if (nombre) {
+              window.location.href = `/home/${nombre}`;
+            } else if (categoriaSeleccionada) {
+              window.location.href = `/home/categoria/${categoriaSeleccionada}`;
+            } else if (fechaHora) {
+              const horario = Math.floor(new Date(fechaHora).getTime() / 1000);
+              window.location.href = `/home/horario/${horario}`;
+            } else {
+              alert("Por favor, complete al menos un campo para buscar.");
+            }
           }}
-          className="button_buscar">
+          className="button_buscar"
+        >
           Buscar
         </button>
       </div>
