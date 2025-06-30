@@ -11,7 +11,7 @@ const Header = () => {
     return (
         <header>
             <h1> GYM </h1>
-            <nav>
+            <nav className="header_nav">
                 <a href="/">Home</a>
                 {isLoggedIn ? (
                     <button onClick={logOut}> Cerrar Sesión</button>
