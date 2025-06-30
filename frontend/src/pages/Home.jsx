@@ -1,11 +1,13 @@
 import "@styles/Home.css";
 import { useState, useEffect } from "react";
+import { showToast } from "../components/Toast";
 
 const Home = () => {
   const [actividades, setActividades] = useState([]);
   const [categorias, setCategoria] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
   const [fechaHora, setFechaHora] = useState('');
+  const [nombre, setNombre] = useState("");   // Falta definir el estado y función para el filtro por nombre
 
   useEffect(() => {
     const isAdmin = localStorage.getItem("isAdmin");
@@ -46,8 +48,16 @@ const Home = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+<<<<<<< HEAD
           usuario_id: parseInt(usuarioId),
           actividad_id: parseInt(actividadId),
+=======
+          inscripcion: {
+            usuario_id: parseInt(usuarioId),
+            actividad_id: parseInt(actividadId),
+          },
+          token: localStorage.getItem("token"),
+>>>>>>> 9711e85b61875286270a5d2d03b3c6fc2f3f8587
         }),
       });
 
@@ -56,6 +66,7 @@ const Home = () => {
       }
 
       const data = await response.json();
+<<<<<<< HEAD
       alert("¡Inscripción exitosa!"); // TODO TOASTADA
       console.log("Inscripción:", data);
     } catch (error) {
@@ -63,6 +74,17 @@ const Home = () => {
       alert("Hubo un problema con la inscripción.");
     }
   };
+=======
+      showToast("Inscripcion Aceptada", "success");
+      console.log("Inscripción:", data);
+    } catch (error) {
+      console.error("Error en la inscripción:", error);
+      showToast("Inscripcion rechazada", "error");
+    }
+  };
+
+
+>>>>>>> 9711e85b61875286270a5d2d03b3c6fc2f3f8587
 
 
   return (
@@ -72,35 +94,45 @@ const Home = () => {
         <p>Explora nuestras actividades y planes.</p>
       </div>
 
+<<<<<<< HEAD
       {/* Barra de búsqueda con botones */}
       <div className="actividad_filtros" >
+=======
+      <div className="actividad_filtros">
+>>>>>>> 9711e85b61875286270a5d2d03b3c6fc2f3f8587
         {/* Filtro por nombre */}
         <input
           type="text"
           placeholder="Buscar por nombre"
-          className="filtro_input_nombre"
+          className="filtro_input"
           id="nombre"
-          style={{ marginRight: '10px', padding: '5px' }}
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
         />
+<<<<<<< HEAD
         <button className="buscarButton" onClick={() => window.location.href = `/home/${document.getElementById('nombre').value}`} >
           Buscar
         </button>
+=======
+>>>>>>> 9711e85b61875286270a5d2d03b3c6fc2f3f8587
 
         {/* Filtro por categoría*/}
         <select
           value={categoriaSeleccionada}
           onChange={(e) => setCategoriaSeleccionada(e.target.value)}
-          type="text"
-          placeholder="Buscar por categoría"
-          className="filtro_input_categoria"
+          className="filtro_input"
           id="categoriaInput"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9711e85b61875286270a5d2d03b3c6fc2f3f8587
         >
           <option value="">Selecciona una categoría</option>
           {categorias.map((categoria) => (
             <option key={categoria.id} value={categoria.nombre}>
               {categoria.nombre}
             </option>
+<<<<<<< HEAD
           ))
           }
         </select>
@@ -108,23 +140,35 @@ const Home = () => {
           Buscar
         </button>
 
+=======
+          ))}
+        </select>
+>>>>>>> 9711e85b61875286270a5d2d03b3c6fc2f3f8587
 
-        {/* Filtro por horario TODO calendar */}
+        {/* Filtro por horario */}
         <input
           type="datetime-local"
           value={fechaHora}
           onChange={(e) => setFechaHora(e.target.value)}
-          className="filtro_input_horario"
-          style={{ marginRight: '10px', padding: '5px' }}
+          className="filtro_input"
         />
 
+        {/* Botón único de búsqueda */}
         <button
           onClick={() => {
-            if (!fechaHora) return;
-            const horario = Math.floor(new Date(fechaHora).getTime() / 1000); // en segundos
-            window.location.href = `/home/horario/${horario}`;
+            if (nombre) {
+              window.location.href = `/home/${nombre}`;
+            } else if (categoriaSeleccionada) {
+              window.location.href = `/home/categoria/${categoriaSeleccionada}`;
+            } else if (fechaHora) {
+              const horario = Math.floor(new Date(fechaHora).getTime() / 1000);
+              window.location.href = `/home/horario/${horario}`;
+            } else {
+              alert("Por favor, complete al menos un campo para buscar.");
+            }
           }}
-          style={{ padding: '5px 10px' }}>
+          className="button_buscar"
+        >
           Buscar
         </button>
       </div>
@@ -134,6 +178,7 @@ const Home = () => {
         <ul>
           {actividades.length > 0 ? (
             actividades.map((actividad) => (
+<<<<<<< HEAD
               <li key={actividad.id} style={{ marginBottom: '15px' }}>
                 <p><strong>Título:</strong> {actividad.nombre}</p>
                 <p><strong>Horario:</strong> {new Date(actividad.horario * 1000).toLocaleString()}</p>
@@ -143,6 +188,17 @@ const Home = () => {
                 </button>
                 <button onClick={() => funcionInscripcion(actividad.id)} style={{ padding: '5px 10px' }}>
                   Inscripción
+=======
+              <li key={actividad.id} className="acti_filtro">
+                <p><strong>Título:</strong> {actividad.nombre}</p>
+                <p><strong>Horario:</strong> {new Date(actividad.horario * 1000).toLocaleString()}</p>
+                <p>Profesor: {actividad.usuario_nombre}</p>
+                <button onClick={() => window.location.href = `/home/id/${actividad.id}`} className="button_detalles">
+                  Detalles
+                </button>
+                <button onClick={() => funcionInscripcion(actividad.id)} className="button_detalles">
+                  Inscribirse
+>>>>>>> 9711e85b61875286270a5d2d03b3c6fc2f3f8587
                 </button>
               </li>
             ))

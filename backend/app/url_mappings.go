@@ -22,7 +22,7 @@ func MapUrls() {
 	router.GET("/home", actividadController.GetActividades)             // Listo
 	router.POST("/home", actividadController.ActividadInsert)           // Listo
 	router.GET("/home/:id", actividadController.GetActividadById)       // Listo
-	router.PUT("/home/:id", actividadController.PutActividadById)       // Listo
+	router.PUT("/home/:id", actividadController.PutActividadById)       // Listo test
 	router.DELETE("/home/:id", actividadController.DeleteActividadById) // Listo
 
 	// Rutas Usuario

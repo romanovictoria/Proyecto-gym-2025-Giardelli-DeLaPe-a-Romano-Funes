@@ -1,79 +1,73 @@
 .layout-container {
-    width: 100vw;
-    height: 100vh;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
-    background-color: hsl(0, 42%, 30%);
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 30%, #16213e 70%, #0f0f23 100%);
 }
 
-
 .barraBusqueda {
-    margin: 200px auto 40px auto;
-    padding: 0 10px;
-    min-height: 400px;
-    font-family: 'Times New Roman', Times, serif;
-    background-color: rgb(245, 251, 251);
+  margin: 200px auto 40px auto;
+  padding: 0 10px;
+  min-height: 400px;
+  font-family: 'Times New Roman', Times, serif;
+  background: rgba(15, 15, 35, 0.95);
+  border-radius: 25px;
+  box-shadow: 0 12px 40px rgba(74, 144, 226, 0.2);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(74, 144, 226, 0.3);
 }
 
 .labelBusqueda {
-    margin-bottom: 2px;
-    font-size: 14px;
-    font-weight: 500;
-    color: rgba(128, 128, 128, 0.87);
+  margin-bottom: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #e0e6ed;
 }
 
 .pointerLupa {
-    display: flex;
-    position: absolute;
-    inset-y: 0;
-    left: 0;
-    items-center: center;
-    padding-left: 3px;
-    pointer-events: none;
+  display: flex;
+  position: absolute;
+  inset-y: 0;
+  left: 0;
+  items-center: center;
+  padding-left: 3px;
+  pointer-events: none;
 }
 
 .escribeBusqueda {
-    display: block;
-    padding: 4px;
-    padding-left: 10px;
-    width: 100%;
-    font-size: 14px;
-    color: #1a202c;
-    background-color: rgb(243, 241, 241);
-    border: 1px solid #ccc;
-    border-radius: 8px;
+  display: block;
+  padding: 4px;
+  padding-left: 10px;
+  width: 100%;
+  font-size: 14px;
+  color: #ffffff;
+  background-color: rgba(26, 26, 46, 0.9);
+  border: 1px solid #4a90e2;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.escribeBusqueda:focus {
+  border-color: #61dafb;
+  box-shadow: 0 0 0 3px rgba(97, 218, 251, 0.3);
+  outline: none;
 }
 
 .botonBusqueda {
-    color: white;
-    position: absolute;
-    right: 2.5;
-    bottom: 2.5;
-    background-color: #2d4a59;
-    font-weight: medium;
+  background: #ffffff;
+  color: #4a90e2;
+  font-weight: 600;
+  border: 2px solid #4a90e2;
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .botonBusqueda:hover {
-    /* pseudoclase, efecto de que cambia el color cuando pasa el mouse*/
-    background-color: #467890;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 0, 255, .5);
-}
-
-
-/*PARA LA OTRA OPCION DE BUSQUEDA*/
-.searchbox {
-    position: relative;
-    left: 5vmax;
-}
-
-.searchbox>input {
-    border: none;
-    border-bottom: 1px solid black;
-    width: 15vmax;
-    font-size: 1.1vmax;
-    outline: none;
-    color: black;
-    font-weight: 100;
+  background: #4a90e2;
+  color: white;
+  box-shadow: 0 6px 20px rgba(74, 144, 226, 0.3);
 }

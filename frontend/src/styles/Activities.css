@@ -1,9 +1,95 @@
-.activities-conteiner {
+.activities-container {
     display: flex;
+<<<<<<< HEAD
     gap: 1rem;
     justify-content: center
 }
 
 .ActivityItem {
     margin-bottom: 15px;
+=======
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 2rem;
+}
+
+.activity-card {
+    background: rgba(15, 15, 35, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    border: 1px solid rgba(74, 144, 226, 0.4);
+    padding: 2rem;
+    box-shadow: 0 12px 40px rgba(74, 144, 226, 0.15);
+    transition: all 0.3s ease;
+    max-width: 320px;
+    color: white;
+}
+
+.activity-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(74, 144, 226, 0.3);
+    border-color: rgba(97, 218, 251, 0.6);
+}
+
+.activity-card h3 {
+    color: #61dafb;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    text-shadow: 0 2px 8px rgba(97, 218, 251, 0.3);
+}
+
+.activity-card h2 {
+    color: #e0e6ed;
+    font-size: 1.3rem;
+    margin: 0.5rem 0;
+}
+
+.activity-card p {
+    color: rgba(224, 230, 237, 0.9);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.activity-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.activity-card li {
+    background: rgba(74, 144, 226, 0.15);
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border-radius: 12px;
+    border-left: 3px solid #4a90e2;
+    font-size: 0.9rem;
+}
+
+/* 🎨 Botones claros */
+.activity-card button {
+    background: #ffffff;
+    color: #4a90e2;
+    font-weight: 600;
+    border: 2px solid #4a90e2;
+    padding: 10px 20px;
+    margin: 6px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.activity-card button:hover {
+    background: #4a90e2;
+    color: white;
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.3);
+}
+
+.Activity_id {
+    margin-bottom: '15px'
+}
+
+.button_inscripcion {
+    padding: '5px 10px'
+>>>>>>> 9711e85b61875286270a5d2d03b3c6fc2f3f8587
 }

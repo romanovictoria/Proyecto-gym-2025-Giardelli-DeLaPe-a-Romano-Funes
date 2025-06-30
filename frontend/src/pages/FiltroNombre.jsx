@@ -1,7 +1,6 @@
 import "@styles/Home.css";
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
-import '../styles/Activities.css';
 
 const FitroNombre = () => {
     const { nombre } = useParams();
@@ -41,7 +40,7 @@ const FitroNombre = () => {
                 <ul>
                     {actividadesFiltradas.length > 0 ? (
                         actividadesFiltradas.map((actividad) => (
-                            <li key={actividad.id} className="ActivityItem">
+                            <li key={actividad.id} style={{ marginBottom: '15px' }}>
                                 <p><strong>Título:</strong> {actividad.nombre}</p>
                                 <p><strong>Horario:</strong> {new Date(actividad.horario * 1000).toLocaleString()}</p>
                                 {/* <p>Profesor: {actividad.usuario.nombre}</p> */}
