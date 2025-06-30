@@ -14,11 +14,10 @@ const Login = () => {
     e.preventDefault();
 
     const body = JSON.stringify({
-      email: email, // suponiendo que "userName" en realidad es el email
+      email: email,
       password: password,
     });
 
-    // Hacer la petición login y obtener la respuesta
     await fetchLogin("http://localhost:8080/login", {
       method: "POST",
       headers: {
@@ -27,6 +26,7 @@ const Login = () => {
       body,
     });
   };
+
   useEffect(() => {
     if (loginResponse?.token) {
       localStorage.setItem("token", loginResponse?.token);
@@ -37,15 +37,21 @@ const Login = () => {
       localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
 
       showToast("Bienvenido");
-      navigate("/home");
+
+      // Redirigir según el rol del usuario
+      if (isAdmin) {
+        navigate("/admin/home");
+      } else {
+        navigate("/home");
+      }
     }
+
     if (error) {
-      showToast("credenciales invalidas", "error");
-      localStorage.setItem("isAdmin", false);
+      showToast("Credenciales inválidas", "error");
+      localStorage.setItem("isAdmin", "false");
       localStorage.setItem("token", "");
-      // Aquí se puede agregar la lógica para el caso de login fallido
     }
-  }, [loginResponse, error]);
+  }, [loginResponse, error, navigate]);
 
   return (
     <div className="login-container">
@@ -54,7 +60,7 @@ const Login = () => {
           <h2>Iniciar Sesión</h2>
           <input
             type="text"
-            placeholder="email"
+            placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
             required
