@@ -13,7 +13,7 @@ func GetCategoriaById(id int) model.Categoria {
 	var categoria model.Categoria
 
 	Db.Where("id = ?", id).First(&categoria)
-	log.Debug("Barrio: ", categoria)
+	log.Debug("Categoria: ", categoria)
 
 	return categoria
 }
@@ -25,7 +25,7 @@ func InsertarCategoria(categoria model.Categoria) model.Categoria {
 		//TODO Manage Errors
 		log.Error("")
 	}
-	log.Debug("Barrio Registrado: ", categoria)
+	log.Debug("Categoria Registrada: ", categoria)
 	return categoria
 }
 
@@ -33,7 +33,7 @@ func GetCategorias() model.Categorias {
 	var categorias model.Categorias
 	Db.Order("nombre").Find(&categorias)
 
-	log.Debug("Barrios: ", categorias)
+	log.Debug("Categoria: ", categorias)
 
 	return categorias
 }
