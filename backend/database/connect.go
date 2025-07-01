@@ -8,7 +8,7 @@ import (
 	"Proyecto-gym/model"
 	"log"
 
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -19,8 +19,7 @@ var (
 )
 
 func init() {
-	dsn := "root:4818841ro@tcp(127.0.0.1:3306)/vital_gym?charset=utf8mb4&parseTime=True&loc=Local"
-	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+	DB, err = gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
 
