@@ -2,13 +2,14 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/Login";
 import Home from "../pages/Home";
 import AdminHome from "../pages/adminHome";
-import AdminActivities from "../components/AdminActivities";
+import AdminActivities from "../pages/adminActivities";
 import PrivateLayout from "../pages/Layout/PrivateLayout";
 import PublicLayout from "../pages/Layout/PublicLayout";
 import Nombre from "../pages/FiltroNombre";
 import Categoria from "../pages/FiltroCategoria";
 import Horario from "../pages/FiltroHorario";
 import Detalle from "../pages/activityDetail";
+import MisActividades from "../pages/misActividades";
 
 // Componente para proteger rutas de admin
 const AdminRoute = ({ children }) => {
@@ -85,6 +86,8 @@ const RouterApp = () => {
                         }
                     />
                 </Route>
+
+                <Route path="/mis-actividades" element={<MisActividades />} />
 
                 {/* Rutas privadas para administradores */}
                 <Route element={<PrivateLayout />}>

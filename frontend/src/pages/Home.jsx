@@ -142,6 +142,9 @@ const Home = () => {
             <p>No se encontraron actividades.</p>
           )}
         </ul>
+        <Link to="/mis-actividades" className="nav-link">
+          Mis actividades
+        </Link>
       </div>
     </div>
   );

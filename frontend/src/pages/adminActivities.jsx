@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '@styles/Activities.css'
-import { showToast } from './Toast';
+import { showToast } from '../components/Toast';
 
 const AdminActivities = () => {
     const [activities, setActivities] = useState([]);

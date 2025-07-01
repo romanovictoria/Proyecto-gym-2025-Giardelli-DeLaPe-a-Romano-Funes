@@ -1,10 +1,7 @@
 import "@styles/Home.css";
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
-<<<<<<< HEAD
 import '../styles/Activities.css';
-=======
->>>>>>> 9711e85b61875286270a5d2d03b3c6fc2f3f8587
 
 const FitroHorario = () => {
     const { horario } = useParams();
@@ -44,18 +41,14 @@ const FitroHorario = () => {
                 <ul>
                     {actividadesFiltradas.length > 0 ? (
                         actividadesFiltradas.map((actividad) => (
-<<<<<<< HEAD
                             <li key={actividad.id} className="ActivityItem">
-=======
-                            <li key={actividad.id} className="acti_filtro">
->>>>>>> 9711e85b61875286270a5d2d03b3c6fc2f3f8587
                                 <p><strong>Título:</strong> {actividad.nombre}</p>
                                 <p><strong>Horario:</strong> {new Date(actividad.horario * 1000).toLocaleString()}</p>
                                 {/* <p>Profesor: {actividad.usuario.nombre}</p> */}
                             </li>
                         ))
                     ) : (
-                        <p>No se encontraron actividades.</p>
+                        <li>No hay actividades para este horario.</li>
                     )}
                 </ul>
             </div>
