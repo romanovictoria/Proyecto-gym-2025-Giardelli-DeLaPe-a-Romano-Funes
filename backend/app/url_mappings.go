@@ -19,15 +19,16 @@ func MapUrls() {
 	router.POST("/inscripcion", inscripcionController.RegistrarInscripcion)            // 	Listo
 
 	// Rutas Actividad
-	router.GET("/home", actividadController.GetActividades)             // Listo
-	router.POST("/home", actividadController.ActividadInsert)           // Listo
-	router.GET("/home/:id", actividadController.GetActividadById)       // Listo
-	router.PUT("/home/:id", actividadController.PutActividadById)       // Listo test
-	router.DELETE("/home/:id", actividadController.DeleteActividadById) // Listo
+	router.GET("/home", actividadController.GetActividades)                                           // Listo
+	router.POST("/home", actividadController.ActividadInsert)                                         // Listo
+	router.GET("/home/:id", middleware.AdminMiddleware(), actividadController.GetActividadById)       // Listo
+	router.PUT("/home/:id", middleware.AdminMiddleware(), actividadController.PutActividadById)       // Listo test
+	router.DELETE("/home/:id", middleware.AdminMiddleware(), actividadController.DeleteActividadById) // Listo
 
 	// Rutas Usuario
-	router.GET("/usuario", usuarioController.GetUsuarios)    // Listo
-	router.POST("/usuario", usuarioController.CreateUsuario) // Listo
+	router.GET("/usuario", usuarioController.GetUsuarios)                      // Listo
+	router.POST("/usuario", usuarioController.CreateUsuario)                   // Listo
+	router.GET("/mis-actividades", inscripcionController.GetInscripcionesUser) // para que el usuario pueda ver sus actividades
 
 	// Rutas Categoria
 	router.GET("/categoria", categoriaController.GetCategorias)
