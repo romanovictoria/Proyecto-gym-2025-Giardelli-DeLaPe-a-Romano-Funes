@@ -36,8 +36,9 @@ func GetActividadById(c *gin.Context) {
 }
 
 func ActividadInsert(c *gin.Context) {
+	var verificarDto dto.VerificacionRequest
 	var actividadDto dto.ActividadDto
-	err := c.BindJSON(&actividadDto)
+	err := c.BindJSON(&verificarDto)
 
 	// Error Parsing json param
 	if err != nil {
@@ -46,14 +47,18 @@ func ActividadInsert(c *gin.Context) {
 		return
 	}
 
-	actividadDto, er := service.ActividadService.InsertActividad(actividadDto)
-	// Error del Insert
-	if er != nil {
-		c.JSON(er.Status(), er)
-		return
+	if verificarDto.Verificar {
+		actividadDto = verificarDto.Actividad
+		actividadDto, er := service.ActividadService.InsertActividad(actividadDto)
+		// Error del Insert
+		if er != nil {
+			c.JSON(er.Status(), er)
+			return
+		}
+		c.JSON(http.StatusCreated, actividadDto)
+	} else {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "La verificación fue denegada."})
 	}
-
-	c.JSON(http.StatusCreated, actividadDto)
 }
 
 func PutActividadById(c *gin.Context) {
