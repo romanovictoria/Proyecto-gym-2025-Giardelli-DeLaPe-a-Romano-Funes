@@ -18,11 +18,6 @@ export function useApiRequest() {
       setError(err);
     }
   }, []);
-  /* useEffect(() => {
-    console.log("data: ", data);
-    console.log("error: ", error);
-  }, [data, error]); */
 
   return { data, error, request };
 }
-/* console.log(": ",) */
