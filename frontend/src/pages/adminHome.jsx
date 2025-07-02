@@ -3,8 +3,8 @@ import '@styles/Home.css';
 
 const AdminHome = () => {
     const [actividades, setActividades] = useState([]);
-    // const [inscripciones, setInscripciones] = useState([]);
-    // const [usuarios, setUsuarios] = useState([]);
+    const [inscripcionesPorActividad, setInscripcionesPorActividad] = useState({});
+    const [usuarios, setUsuarios] = useState([]);
     const [stats, setStats] = useState({
         totalActividades: 0,
         totalUsuarios: 0,
@@ -15,37 +15,47 @@ const AdminHome = () => {
         fetchData();
     }, []);
 
+    const fetchInscripcionesPorActividad = async (actividadId) => {
+        try {
+            const response = await fetch(`http://localhost:8080/inscripciones/${actividadId}`);
+            if (!response.ok) {
+                throw new Error("No se pudieron obtener las inscripciones");
+            }
+            const data = await response.json();
+            setInscripcionesPorActividad((prev) => ({
+                ...prev,
+                [actividadId]: data
+            }));
+            return data.length; // para sumar totalInscripciones
+        } catch (error) {
+            console.error(`Error al obtener inscripciones de la actividad ${actividadId}:`, error);
+            return 0;
+        }
+    };
+
     const fetchData = async () => {
         try {
-            // Obtener actividades
+            // Actividades
             const actividadesRes = await fetch("http://localhost:8080/actividad");
             const actividadesData = await actividadesRes.json();
             setActividades(actividadesData);
 
-            // Obtener inscripciones (asumiendo que existe este endpoint)
-            let inscripcionesData = [];
-            try {
-                const inscripcionesRes = await fetch("http://localhost:8080/inscripciones");
-                inscripcionesData = await inscripcionesRes.json();
-                // setInscripciones(inscripcionesData);
-            } catch {
-                console.log("Endpoint de inscripciones no disponible");
-            }
+            // Usuarios
+            const usuariosRes = await fetch("http://localhost:8080/usuarios");
+            const usuariosData = await usuariosRes.json();
+            setUsuarios(usuariosData);
 
-            // Obtener usuarios (asumiendo que existe este endpoint)
-            let usuariosData = [];
-            try {
-                const usuariosRes = await fetch("http://localhost:8080/usuario");
-                usuariosData = await usuariosRes.json();
-                // setUsuarios(usuariosData);
-            } catch {
-                console.log("Endpoint de usuarios no disponible");
+            // Inscripciones por actividad
+            let totalInscripciones = 0;
+            for (const actividad of actividadesData) {
+                const cantidad = await fetchInscripcionesPorActividad(actividad.id);
+                totalInscripciones += cantidad;
             }
 
             setStats({
                 totalActividades: actividadesData.length,
                 totalUsuarios: usuariosData.length,
-                totalInscripciones: inscripcionesData.length
+                totalInscripciones: totalInscripciones
             });
 
         } catch (error) {
@@ -84,69 +94,29 @@ const AdminHome = () => {
             </div>
 
             {/* Estadísticas */}
-            <div className="admin-stats" style={{
-                display: 'flex',
-                gap: '20px',
-                justifyContent: 'center',
-                marginBottom: '30px'
-            }}>
-                <div className="stat-card" style={{
-                    background: '#f0f0f0',
-                    padding: '20px',
-                    borderRadius: '8px',
-                    minWidth: '150px'
-                }}>
+            <div className="admin-stats" >
+                <div className="stat-card">
                     <h3>{stats.totalActividades}</h3>
                     <p>Total Actividades</p>
                 </div>
-                <div className="stat-card" style={{
-                    background: '#f0f0f0',
-                    padding: '20px',
-                    borderRadius: '8px',
-                    minWidth: '150px'
-                }}>
+                <div className="stat-card" >
                     <h3>{stats.totalUsuarios}</h3>
                     <p>Total Usuarios</p>
                 </div>
-                <div className="stat-card" style={{
-                    background: '#f0f0f0',
-                    padding: '20px',
-                    borderRadius: '8px',
-                    minWidth: '150px'
-                }}>
+                <div className="stat-card">
                     <h3>{stats.totalInscripciones}</h3>
                     <p>Total Inscripciones</p>
                 </div>
             </div>
 
             {/* Navegación rápida */}
-            <div className="admin-navigation" style={{ marginBottom: '30px' }}>
-                <button
-                    onClick={() => window.location.href = '/admin/activities'}
-                    style={{ // TODO PASAR A OTRO ARCHIVO
-                        padding: '10px 20px',
-                        margin: '0 10px',
-                        backgroundColor: '#007bff',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer'
-                    }}
-                >
+            <div className="admin-navigation" >
+                <button className='admin-button'
+                    onClick={() => window.location.href = '/adminActivities'} >
                     Gestionar Actividades
                 </button>
-                <button
-                    onClick={() => window.location.href = '/admin/users'}
-                    style={{ // TODO PASAR A OTRO ARCHIVO
-                        padding: '10px 20px',
-                        margin: '0 10px',
-                        backgroundColor: '#28a745',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer'
-                    }}
-                >
+                <button className='admin-button'
+                    onClick={() => window.location.href = '/admin/users'} >
                     Gestionar Usuarios
                 </button>
             </div>
@@ -157,58 +127,27 @@ const AdminHome = () => {
                 <ul>
                     {actividades.length > 0 ? (
                         actividades.map((actividad) => (
-                            <li key={actividad.id} style={{
-                                marginBottom: '15px',
-                                border: '1px solid #ddd',
-                                padding: '15px',
-                                borderRadius: '5px'
-                            }}>
-                                <p><strong>Título:</strong> {actividad.nombre}</p>
-                                <p><strong>Descripción:</strong> {actividad.descripcion}</p>
+                            <li key={actividad.id} className='acti'>
+                                <p><strong>Titulo:</strong> {actividad.nombre}</p>
+                                <p><strong>Descripcion:</strong> {actividad.descripcion}</p>
                                 <p><strong>Horario:</strong> {new Date(actividad.horario * 1000).toLocaleString()}</p>
                                 <p><strong>Profesor:</strong> {actividad.usuario_nombre}</p>
                                 <p><strong>Cupo:</strong> {actividad.cupo}</p>
-                                <p><strong>Categoría:</strong> {actividad.categoria_descripcion}</p>
+                                <p><strong>Categoria:</strong> {actividad.categoria_descripcion}</p>
 
-                                <div className="admin-actions" style={{ marginTop: '10px' }}>
-                                    <button
-                                        onClick={() => window.location.href = `/admin/activity/${actividad.id}/edit`} // TODO
-                                        style={{
-                                            padding: '5px 10px',
-                                            marginRight: '10px',
-                                            backgroundColor: '#ffc107',
-                                            color: 'black',
-                                            border: 'none',
-                                            borderRadius: '3px',
-                                            cursor: 'pointer'
-                                        }}
+                                <div className="admin-actions" >
+                                    <button className='admin-button'
+                                        onClick={() => window.location.href = `/adminActivities/${actividad.id}/edit`} // TODO
                                     >
                                         Editar
                                     </button>
-                                    <button
+                                    <button className='admin-button'
                                         onClick={() => eliminarActividad(actividad.id)}
-                                        style={{
-                                            padding: '5px 10px',
-                                            backgroundColor: '#dc3545',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '3px',
-                                            cursor: 'pointer'
-                                        }}
                                     >
                                         Eliminar
                                     </button>
-                                    <button
-                                        onClick={() => window.location.href = `/admin/activity/${actividad.id}/inscriptions`} // TODO
-                                        style={{
-                                            padding: '5px 10px',
-                                            marginLeft: '10px',
-                                            backgroundColor: '#17a2b8',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '3px',
-                                            cursor: 'pointer'
-                                        }}
+                                    <button className='admin-button'
+                                        onClick={() => window.location.href = `/adminActivities/${actividad.id}/inscriptions`} // TODO
                                     >
                                         Ver Inscripciones
                                     </button>
@@ -219,6 +158,25 @@ const AdminHome = () => {
                         <p>No se encontraron actividades.</p>
                     )}
                 </ul>
+            </div>
+
+            <div>
+                <h2>Administrador</h2>
+                <ul>
+                    {actividades.map((actividad) => (
+                        <li key={actividad.id}>
+                            {actividad.nombre} - Inscripciones: {inscripcionesPorActividad[actividad.id]?.length || 0}
+                        </li>
+                    ))}
+                </ul>
+                <div>
+                    <h2>Usuarios registrados: {usuarios.length}</h2>
+                    <ul>
+                        {usuarios.map((usuario) => (
+                            <li key={usuario.id}>{usuario.nombre}</li>
+                        ))}
+                    </ul>
+                </div>
             </div>
         </div>
     );

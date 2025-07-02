@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-//import '../styles/MisActividades.css'; // si usás estilos
 import { showToast } from "../components/Toast";
 
 const MisActividades = () => {
