@@ -84,69 +84,29 @@ const AdminHome = () => {
             </div>
 
             {/* Estadísticas */}
-            <div className="admin-stats" style={{
-                display: 'flex',
-                gap: '20px',
-                justifyContent: 'center',
-                marginBottom: '30px'
-            }}>
-                <div className="stat-card" style={{
-                    background: '#f0f0f0',
-                    padding: '20px',
-                    borderRadius: '8px',
-                    minWidth: '150px'
-                }}>
+            <div className="admin-stats" >
+                <div className="stat-card">
                     <h3>{stats.totalActividades}</h3>
                     <p>Total Actividades</p>
                 </div>
-                <div className="stat-card" style={{
-                    background: '#f0f0f0',
-                    padding: '20px',
-                    borderRadius: '8px',
-                    minWidth: '150px'
-                }}>
+                <div className="stat-card" >
                     <h3>{stats.totalUsuarios}</h3>
                     <p>Total Usuarios</p>
                 </div>
-                <div className="stat-card" style={{
-                    background: '#f0f0f0',
-                    padding: '20px',
-                    borderRadius: '8px',
-                    minWidth: '150px'
-                }}>
+                <div className="stat-card">
                     <h3>{stats.totalInscripciones}</h3>
                     <p>Total Inscripciones</p>
                 </div>
             </div>
 
             {/* Navegación rápida */}
-            <div className="admin-navigation" style={{ marginBottom: '30px' }}>
-                <button
-                    onClick={() => window.location.href = '/admin/activities'}
-                    style={{ // TODO PASAR A OTRO ARCHIVO
-                        padding: '10px 20px',
-                        margin: '0 10px',
-                        backgroundColor: '#007bff',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer'
-                    }}
-                >
+            <div className="admin-navigation" >
+                <button className='admin-button'
+                    onClick={() => window.location.href = '/adminActivities'} >
                     Gestionar Actividades
                 </button>
-                <button
-                    onClick={() => window.location.href = '/admin/users'}
-                    style={{ // TODO PASAR A OTRO ARCHIVO
-                        padding: '10px 20px',
-                        margin: '0 10px',
-                        backgroundColor: '#28a745',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer'
-                    }}
-                >
+                <button className='admin-button'
+                    onClick={() => window.location.href = '/admin/users'} >
                     Gestionar Usuarios
                 </button>
             </div>
@@ -157,58 +117,27 @@ const AdminHome = () => {
                 <ul>
                     {actividades.length > 0 ? (
                         actividades.map((actividad) => (
-                            <li key={actividad.id} style={{
-                                marginBottom: '15px',
-                                border: '1px solid #ddd',
-                                padding: '15px',
-                                borderRadius: '5px'
-                            }}>
-                                <p><strong>Título:</strong> {actividad.nombre}</p>
-                                <p><strong>Descripción:</strong> {actividad.descripcion}</p>
+                            <li key={actividad.id} className='acti'>
+                                <p><strong>Titulo:</strong> {actividad.nombre}</p>
+                                <p><strong>Descripcion:</strong> {actividad.descripcion}</p>
                                 <p><strong>Horario:</strong> {new Date(actividad.horario * 1000).toLocaleString()}</p>
                                 <p><strong>Profesor:</strong> {actividad.usuario_nombre}</p>
                                 <p><strong>Cupo:</strong> {actividad.cupo}</p>
-                                <p><strong>Categoría:</strong> {actividad.categoria_descripcion}</p>
+                                <p><strong>Categoria:</strong> {actividad.categoria_descripcion}</p>
 
-                                <div className="admin-actions" style={{ marginTop: '10px' }}>
-                                    <button
+                                <div className="admin-actions" >
+                                    <button className='admin-button'
                                         onClick={() => window.location.href = `/admin/activity/${actividad.id}/edit`} // TODO
-                                        style={{
-                                            padding: '5px 10px',
-                                            marginRight: '10px',
-                                            backgroundColor: '#ffc107',
-                                            color: 'black',
-                                            border: 'none',
-                                            borderRadius: '3px',
-                                            cursor: 'pointer'
-                                        }}
                                     >
                                         Editar
                                     </button>
-                                    <button
+                                    <button className='admin-button'
                                         onClick={() => eliminarActividad(actividad.id)}
-                                        style={{
-                                            padding: '5px 10px',
-                                            backgroundColor: '#dc3545',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '3px',
-                                            cursor: 'pointer'
-                                        }}
                                     >
                                         Eliminar
                                     </button>
-                                    <button
+                                    <button className='admin-button'
                                         onClick={() => window.location.href = `/admin/activity/${actividad.id}/inscriptions`} // TODO
-                                        style={{
-                                            padding: '5px 10px',
-                                            marginLeft: '10px',
-                                            backgroundColor: '#17a2b8',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '3px',
-                                            cursor: 'pointer'
-                                        }}
                                     >
                                         Ver Inscripciones
                                     </button>
