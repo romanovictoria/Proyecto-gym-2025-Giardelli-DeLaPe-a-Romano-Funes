@@ -7,18 +7,36 @@ const AdminActivities = () => {
     const [actividades, setActividades] = useState([]);
     const [crearActividad, setCrearActividad] = useState(false);
     const [editarActividad, setEditarActividad] = useState(null);
-    const [nombre, setNombre] = useState("");
-    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
+    const [categorias, setCategoria] = useState([]);
+    const [usuarios, setUsuarios] = useState([]);
     const [contenidoActividad, setContenidoActividad] = useState({
         nombre: '',
         descripcion: '',
-        cupo: 0,
-        categoria: '',
-        horarios: []
+        cupo: '',
+        categoria_id: '',
+        horarios: [],
+        usuario_id: ""
     });
+
+    const buildActividadBody = () => {
+    return {
+        actividad: {
+            nombre: contenidoActividad.nombre,
+            descripcion: contenidoActividad.descripcion,
+            cupo: parseInt(contenidoActividad.cupo),
+            categoria_id: parseInt(contenidoActividad.categoria),
+            usuario_id: parseInt(contenidoActividad.usuario_id),
+            horarios: contenidoActividad.horarios
+        },
+        verificar: localStorage.getItem("isAdmin") === "true",
+        token: localStorage.getItem("token")
+    };};
+
 
     useEffect(() => {
         fetchActividades();
+        fetchCategoria();
+        fetchUsuarios();
     }, []);
 
     function fetchActividades() {
@@ -50,71 +68,111 @@ const AdminActivities = () => {
     };
 
     const handleEdit = (activity) => {
-        setEditarActividad(activity);
-        setContenidoActividad({
-            nombre: activity.nombre,
-            descripcion: activity.descripcion,
-            cupo: activity.cupo,
-            categoria: activity.categoria || '',
-            horarios: activity.horarios || []
-        });
-        setCrearActividad(true);
+    setEditarActividad(activity);
+    setContenidoActividad({
+        nombre: activity.nombre,
+        descripcion: activity.descripcion,
+        cupo: activity.cupo,
+        categoria: activity.categoria_id?.toString() || '',
+        usuario_id: activity.usuario_id?.toString() || '',
+        horarios: activity.horarios || []
+    });
+    setCrearActividad(true);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const bodyActividad = {
-            actividad: {
-            nombre: contenidoActividad.nombre,
-            descripcion: contenidoActividad.descripcion,
-            cupo: parseInt(contenidoActividad.cupo),
-            categoria: parseInt(contenidoActividad.categoria),
-            horarios: contenidoActividad.horarios
+
+
+    const handleSubmit = (e) => {
+    e.preventDefault();
+    if (editarActividad) {
+        editActividad();
+    } else {
+        newActividad();
+    }};
+
+    const editActividad = async () => {
+    const bodyActividad = buildActividadBody();
+
+    try {
+        const response = await fetch(`http://localhost:8080/actividad/${editarActividad.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                // Authorization si lo usás:
+                // Authorization: `Bearer ${localStorage.getItem("token")}`
             },
-            verificar: false,
-            token: localStorage.getItem("token"),
-        };
-        if (localStorage.getItem("isAdmin") == "true") {
-            bodyActividad.verificar = true
-        }
+            body: JSON.stringify(bodyActividad)
+        });
         console.log(bodyActividad)
-        const url = editarActividad
-            ? `http://localhost:8080/actividad/${editarActividad.id}`
-            : 'http://localhost:8080/actividad';
-
-        const method = editarActividad ? 'PUT' : 'POST';
-
-        try {
-            const response = await fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(bodyActividad)
-            });
-
-            if (response.ok) {
-                showToast(editarActividad ? 'Actividad actualizada' : 'Actividad creada');
-                setCrearActividad(false);
-                setEditarActividad(null);
-                setContenidoActividad({ nombre: '', descripcion: '', cupo: '', categoria: '', horarios: [] });
-                fetchActividades();
-            } else {
-                showToast('Error al guardar la actividad', 'error');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            showToast('Error al guardar la actividad', 'error');
+        if (response.ok) {
+            showToast('Actividad actualizada');
+            setCrearActividad(false);
+            setEditarActividad(null);
+            setContenidoActividad({ nombre: '', descripcion: '', cupo: '', categoria: '', horarios: [] });
+            fetchActividades();
+        } else {
+            showToast('Error al actualizar la actividad', 'error');
         }
-    };
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('Error al actualizar la actividad', 'error');
+    }
+};
+
+    const newActividad = async () => {
+    const bodyActividad = buildActividadBody();
+
+    try {
+        const response = await fetch("http://localhost:8080/actividad", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                // Si necesitás Authorization en header:
+                // Authorization: `Bearer ${localStorage.getItem("token")}`
+            },
+            body: JSON.stringify(bodyActividad)
+        });
+
+        if (response.ok) {
+            showToast('Actividad creada');
+            setCrearActividad(false);
+            setContenidoActividad({ nombre: '', descripcion: '', cupo: '', categoria: '', horarios: [] });
+            fetchActividades();
+        } else {
+            const errorData = await response.json();
+            console.error("Error al crear actividad:", errorData);
+            showToast('Error al crear la actividad', 'error');
+        }
+    } catch (error) {
+        console.error("Error al enviar la solicitud:", error);
+        showToast('Error al crear la actividad', 'error');
+    }};
+    const fetchCategoria = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/categoria");
+      const data = await response.json();
+      setCategoria(data);
+    } catch (error) {
+      console.error("Error al obtener actividades:", error);
+    }
+  };
+    const fetchUsuarios = async () => {
+    try {
+        const response = await fetch("http://localhost:8080/usuario");
+        const data = await response.json();
+        setUsuarios(data);
+    } catch (error) {
+        console.error("Error al obtener usuarios:", error);
+    }};
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setContenidoActividad(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
+    const { name, value } = e.target;
+    setContenidoActividad(prev => ({
+        ...prev,
+        [name]: value
+    }));
+};
+
 
     const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
@@ -143,10 +201,31 @@ const AdminActivities = () => {
                         <input
                             type="number" name="cupo" placeholder="Cupo máximo" value={contenidoActividad.cupo} onChange={handleInputChange} required />
                         <select
-                            value={categoriaSeleccionada}
-                            onChange={e => setCategoriaSeleccionada(e.target.value)}
+                            name="usuario_id"
+                            value={contenidoActividad.usuario_id}
+                            onChange={handleInputChange}
+                            required
+                            >
+                            <option value="">Selecciona un profesor</option>
+                            {usuarios.map((user) => (
+                                <option key={user.id} value={user.id}>
+                                {user.nombre} {user.apellido}
+                                </option>
+                            ))}
+                        </select>
+                        <select
+                            name="categoria"
+                            value={contenidoActividad.categoria}
+                            onChange={handleInputChange}
+                            required
                         >
-                            <option value="">Todas las categorías</option></select>
+                            <option value="">Selecciona una categoría</option>
+                            {categorias.map((categoria) => (
+                                <option key={categoria.id} value={categoria.id}>
+                                    {categoria.nombre}
+                                </option>
+                            ))}
+                        </select>
                         <div className="form-buttons">
                             <button type="submit">
                                 {editarActividad ? 'Actualizar' : 'Crear'}

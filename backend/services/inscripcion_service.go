@@ -46,30 +46,41 @@ func (s *inscripcionService) GetInscripcionById(id int) (dto.InscripcionDto, e.A
 
 func (s *inscripcionService) RegistrarInscripcion(inscripcionDto dto.InscripcionDto) (dto.InscripcionDto, e.ApiError) {
 
-	// 1. Obtener todas las inscripciones del usuario
 	inscripcionesUsuario, err := s.GetInscripcionesUser(inscripcionDto.UsuarioId)
+	var usuario model.Usuario = usuarioCliente.GetUsuarioById(inscripcionDto.UsuarioId)
+	var actividad model.Actividad = actividadCliente.GetActividadById(inscripcionDto.ActividadId)
+
 	if err != nil {
 		return dto.InscripcionDto{}, e.NewInternalServerApiError("Error obteniendo inscripciones del usuario", err)
 	}
-
-	// 2. Verificar si ya está inscripto en la misma actividad
+	if actividad.Cupo <= 0 {
+		return dto.InscripcionDto{}, e.NewBadRequestApiError("Cupo insuficiente para Inscripcion")
+	}
 	for _, inscripcion := range inscripcionesUsuario {
 		if inscripcion.ActividadId == inscripcionDto.ActividadId {
 			return dto.InscripcionDto{}, e.NewBadRequestApiError("El usuario ya está inscripto en la actividad")
 		}
 	}
-
-	// 3. Obtener datos del usuario y la actividad
-	var usuario model.Usuario = usuarioCliente.GetUsuarioById(inscripcionDto.UsuarioId)
-	var actividad model.Actividad = actividadCliente.GetActividadById(inscripcionDto.ActividadId)
-
-	// 4. Registrar inscripción
 	var inscripcion model.Inscripcion
 	inscripcion.Usuario = usuario
 	inscripcion.Actividad = actividad
 	inscripcion.UsuarioId = inscripcionDto.UsuarioId
 	inscripcion.ActividadId = inscripcionDto.ActividadId
 
+	actividad.Cupo -= 1
+	var actividadEditada dto.ActividadDto
+
+	actividadEditada.Id = actividad.Id
+	actividadEditada.Nombre = actividad.Nombre
+	actividadEditada.Descripcion = actividad.Descripcion
+	actividadEditada.CategoriaId = actividad.CategoriaId
+	actividadEditada.CategoriaDescripcion = actividad.Categoria.Nombre
+	actividadEditada.Horario = actividad.Horario
+	actividadEditada.Cupo = actividad.Cupo
+	actividadEditada.UsuarioId = actividad.UsuarioId
+	actividadEditada.UsuarioNombre = actividad.Usuario.Nombre
+
+	ActividadService.PutActividadById(actividad.Id, actividadEditada)
 	now := time.Now()
 	formatted := now.Format(time.RFC822)
 	inscripcion.Fecha = formatted
