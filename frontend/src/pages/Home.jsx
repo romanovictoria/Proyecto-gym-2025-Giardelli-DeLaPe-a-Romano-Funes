@@ -1,6 +1,7 @@
 import "@styles/Home.css";
 import { useState, useEffect } from "react";
 import { showToast } from "../components/Toast";
+import { Link } from "react-router-dom";
 import NavBar from "../components/NavBar";
 
 const Home = () => {
@@ -144,7 +145,7 @@ const Home = () => {
             <p>No se encontraron actividades.</p>
           )}
         </ul>
-        <Link to="/mis-actividades" className="nav-link">
+        <Link to="/misActividades" className="nav-link">
           Mis actividades
         </Link>
       </div>

@@ -92,7 +92,7 @@ const RouterApp = () => {
                     <Route path="*" element={<Navigate to="/home" />} />
                 </Route>
 
-                <Route path="/mis-actividades" element={<MisActividades />} />
+                <Route path="/misActividades" element={<MisActividades />} />
                 
 
                 {/* Rutas privadas para administradores */}

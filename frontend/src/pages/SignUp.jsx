@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { showToast } from "../components/Toast";
+import { useNavigate } from "react-router-dom";
+import { useApiRequest } from "../hooks/useApiRequest";
 import "../styles/SignUp.css";
 
 const SignUp = () => {
@@ -9,8 +11,7 @@ const SignUp = () => {
     email: "",
     password: "",
   });
-
-  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -23,7 +24,10 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
   e.preventDefault();
-
+  const bodyLogin = JSON.stringify({
+      email: formData.email,
+      password: formData.password,
+    });
   const body = {
     usuario: {
       nombre: formData.name,
@@ -45,15 +49,31 @@ const SignUp = () => {
 
     if (response.ok) {
       showToast("Usuario creado correctamente", "success");
+      // await new Promise((resolve) => setTimeout(resolve, 10000));
+      // navigate("/home");
     } else {
       const errorData = await response.json();
       showToast(errorData.message || "Error al registrar el usuario", "error");
     }
   } catch (error) {
     console.error("Error:", error);
-    console.log(error)
-    showToast("Error al conectar con el servidor", "error");
   }
+  const loginResponse = await fetch("http://localhost:8080/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: bodyLogin,
+    });
+    if (loginResponse.ok) {
+      const loginData = await loginResponse.json();
+      localStorage.setItem("token", loginData?.token);
+      localStorage.setItem("usuario_id", loginData?.usuario.id);
+      localStorage.setItem("isAdmin", JSON.stringify(loginData?.usuario.rol));
+
+      showToast("Bienvenido");
+      navigate("/home");
+    }
 };
 
 
@@ -94,7 +114,6 @@ const SignUp = () => {
           required
         />
         <button type="submit">Registrarse</button>
-        {message && <p className="signup-message">{message}</p>}
       </form>
     </div>
   );
