@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '@styles/Activities.css'
 import { showToast } from '../components/Toast';
 
+
 const AdminActivities = () => {
     const [actividades, setActividades] = useState([]);
     const [crearActividad, setCrearActividad] = useState(false);
