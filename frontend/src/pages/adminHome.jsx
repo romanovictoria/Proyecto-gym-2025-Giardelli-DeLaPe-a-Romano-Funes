@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from "../components/NavBar";
 import '@styles/Home.css';
-import NavBar from '../components/NavBar';
 
 const AdminHome = () => {
     const [actividades, setActividades] = useState([]);
