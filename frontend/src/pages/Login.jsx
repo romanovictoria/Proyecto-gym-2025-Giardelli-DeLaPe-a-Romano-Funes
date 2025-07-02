@@ -76,6 +76,9 @@ const Login = () => {
             Ingresar
           </button>
         </form>
+        <button className="register-button" type="button" onClick={() => navigate("/SignUp")}>
+          Registrar
+        </button>
       </div>
     </div>
   );

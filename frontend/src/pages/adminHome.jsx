@@ -105,10 +105,6 @@ const AdminHome = () => {
                     <h3>{stats.totalUsuarios}</h3>
                     <p>Total Usuarios</p>
                 </div>
-                <div className="stat-card">
-                    <h3>{stats.totalInscripciones}</h3>
-                    <p>Total Inscripciones</p>
-                </div>
             </div>
 
             {/* Navegación rápida */}
