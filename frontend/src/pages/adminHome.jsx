@@ -3,8 +3,8 @@ import '@styles/Home.css';
 
 const AdminHome = () => {
     const [actividades, setActividades] = useState([]);
-    // const [inscripciones, setInscripciones] = useState([]);
-    // const [usuarios, setUsuarios] = useState([]);
+    const [inscripcionesPorActividad, setInscripcionesPorActividad] = useState({});
+    const [usuarios, setUsuarios] = useState([]);
     const [stats, setStats] = useState({
         totalActividades: 0,
         totalUsuarios: 0,
@@ -15,37 +15,47 @@ const AdminHome = () => {
         fetchData();
     }, []);
 
+    const fetchInscripcionesPorActividad = async (actividadId) => {
+        try {
+            const response = await fetch(`http://localhost:8080/inscripciones/${actividadId}`);
+            if (!response.ok) {
+                throw new Error("No se pudieron obtener las inscripciones");
+            }
+            const data = await response.json();
+            setInscripcionesPorActividad((prev) => ({
+                ...prev,
+                [actividadId]: data
+            }));
+            return data.length; // para sumar totalInscripciones
+        } catch (error) {
+            console.error(`Error al obtener inscripciones de la actividad ${actividadId}:`, error);
+            return 0;
+        }
+    };
+
     const fetchData = async () => {
         try {
-            // Obtener actividades
+            // Actividades
             const actividadesRes = await fetch("http://localhost:8080/actividad");
             const actividadesData = await actividadesRes.json();
             setActividades(actividadesData);
 
-            // Obtener inscripciones (asumiendo que existe este endpoint)
-            let inscripcionesData = [];
-            try {
-                const inscripcionesRes = await fetch("http://localhost:8080/inscripciones");
-                inscripcionesData = await inscripcionesRes.json();
-                // setInscripciones(inscripcionesData);
-            } catch {
-                console.log("Endpoint de inscripciones no disponible");
-            }
+            // Usuarios
+            const usuariosRes = await fetch("http://localhost:8080/usuarios");
+            const usuariosData = await usuariosRes.json();
+            setUsuarios(usuariosData);
 
-            // Obtener usuarios (asumiendo que existe este endpoint)
-            let usuariosData = [];
-            try {
-                const usuariosRes = await fetch("http://localhost:8080/usuarios");
-                usuariosData = await usuariosRes.json();
-                // setUsuarios(usuariosData);
-            } catch {
-                console.log("Endpoint de usuarios no disponible");
+            // Inscripciones por actividad
+            let totalInscripciones = 0;
+            for (const actividad of actividadesData) {
+                const cantidad = await fetchInscripcionesPorActividad(actividad.id);
+                totalInscripciones += cantidad;
             }
 
             setStats({
                 totalActividades: actividadesData.length,
                 totalUsuarios: usuariosData.length,
-                totalInscripciones: inscripcionesData.length
+                totalInscripciones: totalInscripciones
             });
 
         } catch (error) {
@@ -127,7 +137,7 @@ const AdminHome = () => {
 
                                 <div className="admin-actions" >
                                     <button className='admin-button'
-                                        onClick={() => window.location.href = `/admin/activity/${actividad.id}/edit`} // TODO
+                                        onClick={() => window.location.href = `/adminActivities/${actividad.id}/edit`} // TODO
                                     >
                                         Editar
                                     </button>
@@ -137,7 +147,7 @@ const AdminHome = () => {
                                         Eliminar
                                     </button>
                                     <button className='admin-button'
-                                        onClick={() => window.location.href = `/admin/activity/${actividad.id}/inscriptions`} // TODO
+                                        onClick={() => window.location.href = `/adminActivities/${actividad.id}/inscriptions`} // TODO
                                     >
                                         Ver Inscripciones
                                     </button>
@@ -148,6 +158,25 @@ const AdminHome = () => {
                         <p>No se encontraron actividades.</p>
                     )}
                 </ul>
+            </div>
+
+            <div>
+                <h2>Administrador</h2>
+                <ul>
+                    {actividades.map((actividad) => (
+                        <li key={actividad.id}>
+                            {actividad.nombre} - Inscripciones: {inscripcionesPorActividad[actividad.id]?.length || 0}
+                        </li>
+                    ))}
+                </ul>
+                <div>
+                    <h2>Usuarios registrados: {usuarios.length}</h2>
+                    <ul>
+                        {usuarios.map((usuario) => (
+                            <li key={usuario.id}>{usuario.nombre}</li>
+                        ))}
+                    </ul>
+                </div>
             </div>
         </div>
     );
