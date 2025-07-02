@@ -51,18 +51,18 @@ func (s *usuarioService) Login(loginDto dto.LoginDto) (dto.LoginResponseDto, e.A
 	log.Debug("Llamando a GetUsuarioByEmail con: ", usuario.Email)
 	var usuarioEncontrado model.Usuario = usuarioCliente.GetUsuarioByEmail(usuario.Email)
 	if usuarioEncontrado.Id == 0 {
-		return dto.LoginResponseDto{}, e.NewUnauthorizedApiError("usuario o contraseña incorrectos")
+		return dto.LoginResponseDto{}, e.NewUnauthorizedApiError("Usuario o contraseña incorrectos")
 	}
 
 	// Usar bcrypt para verificar la contraseña
 	if err := utils.CheckPasswordHash(usuarioEncontrado.Password, usuario.Password); err != nil {
-		return dto.LoginResponseDto{}, e.NewUnauthorizedApiError("usuario o contraseña incorrectos")
+		return dto.LoginResponseDto{}, e.NewUnauthorizedApiError("Usuario o contraseña incorrectos")
 	}
 
 	// Generar JWT
 	token, err := utils.GenerateJWT(usuarioEncontrado.Email, usuario.Rol)
 	if err != nil {
-		return dto.LoginResponseDto{}, e.NewInternalServerApiError("error generando token", err)
+		return dto.LoginResponseDto{}, e.NewInternalServerApiError("Error generando token", err)
 	}
 
 	// Obtener los datos del usuario
@@ -84,13 +84,13 @@ func (s *usuarioService) Register(userDto dto.UsuarioDto, password string) (dto.
 	// Verificar si el email ya existe
 	existingUser := usuarioCliente.GetUsuarioByEmail(userDto.Email)
 	if existingUser.Id != 0 {
-		return dto.UsuarioDto{}, e.NewBadRequestApiError("email ya registrado")
+		return dto.UsuarioDto{}, e.NewBadRequestApiError("Email ya registrado")
 	}
 
 	// Hashear la contraseña con bcrypt
 	hashedPassword, err := utils.HashPassword(password)
 	if err != nil {
-		return dto.UsuarioDto{}, e.NewInternalServerApiError("error hasheando contraseña", err)
+		return dto.UsuarioDto{}, e.NewInternalServerApiError("Error hasheando contraseña", err)
 	}
 
 	var usuario model.Usuario

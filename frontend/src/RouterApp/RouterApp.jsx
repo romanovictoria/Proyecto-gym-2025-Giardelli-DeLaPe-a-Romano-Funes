@@ -11,6 +11,7 @@ import Horario from "../pages/FiltroHorario";
 import Detalle from "../pages/activityDetail";
 import MisActividades from "../pages/misActividades";
 import NavBar from "../components/NavBar";
+import SignUp from "../pages/SignUp";
 
 // Componente para proteger rutas de admin
 const AdminRoute = ({ children }) => {
@@ -41,6 +42,7 @@ const RouterApp = () => {
                 {/* Rutas públicas */}
                 <Route element={<PublicLayout />}>
                     <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<SignUp />} />
                     <Route path="*" element={<Navigate to="/login" />} />
                 </Route>
 
@@ -86,9 +88,11 @@ const RouterApp = () => {
                             </UserRoute>
                         }
                     />
+                    <Route path="*" element={<Navigate to="/home" />} />
                 </Route>
 
                 <Route path="/mis-actividades" element={<MisActividades />} />
+                
 
                 {/* Rutas privadas para administradores */}
                 <Route element={<PrivateLayout />}>
@@ -120,7 +124,7 @@ const RouterApp = () => {
                 </Route>
 
                 {/* Redirección por defecto */}
-                <Route path="*" element={<Navigate to="/login" />} />
+                <Route path="*" element={<Navigate to="/admin/home" />} />
             </Routes>
         </BrowserRouter>
     );

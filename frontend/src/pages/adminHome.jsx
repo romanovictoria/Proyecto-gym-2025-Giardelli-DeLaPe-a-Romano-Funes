@@ -35,7 +35,7 @@ const AdminHome = () => {
             // Obtener usuarios (asumiendo que existe este endpoint)
             let usuariosData = [];
             try {
-                const usuariosRes = await fetch("http://localhost:8080/usuarios");
+                const usuariosRes = await fetch("http://localhost:8080/usuario");
                 usuariosData = await usuariosRes.json();
                 // setUsuarios(usuariosData);
             } catch {

@@ -3,7 +3,6 @@ package usuarioController
 import (
 	"Proyecto-gym/dto"
 	service "Proyecto-gym/services"
-	"Proyecto-gym/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -25,7 +24,6 @@ func CreateUsuario(c *gin.Context) {
 	var request struct {
 		Usuario  dto.UsuarioDto `json:"usuario"`
 		Password string         `json:"password"`
-		Token    string         `json:"token"`
 	}
 
 	err := c.BindJSON(&request)
@@ -34,18 +32,11 @@ func CreateUsuario(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-
-	_, errr := utils.ValidateJWT(request.Token)
-	if errr == nil {
-		usuarioCreado, er := service.UsuarioService.Register(request.Usuario, request.Password)
-		if er != nil {
-			c.JSON(er.Status(), er)
-			return
-		}
-
-		c.JSON(http.StatusCreated, usuarioCreado)
-	} else {
-		log.Error("Error validating JWT: ", errr.Error())
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Token inválido o expirado"})
+	usuarioCreado, er := service.UsuarioService.Register(request.Usuario, request.Password)
+	if er != nil {
+		c.JSON(er.Status(), er)
+		return
 	}
+
+	c.JSON(http.StatusCreated, usuarioCreado)
 }
