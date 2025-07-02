@@ -88,6 +88,7 @@ const AdminHome = () => {
 
     return (
         <div>
+            <NavBar />
             <div>
                 <h2>Panel de Administración - Vital Gym</h2>
                 <p>Gestiona actividades, usuarios e inscripciones</p>
