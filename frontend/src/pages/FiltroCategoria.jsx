@@ -17,7 +17,7 @@ const FitroCategoria = () => {
 
     const fetchActividad = async () => {
         try {
-            const response = await fetch("http://localhost:8080/home");
+            const response = await fetch("http://localhost:8080/actividad");
             const data = await response.json();
             setActividades(data);
         } catch (error) {
