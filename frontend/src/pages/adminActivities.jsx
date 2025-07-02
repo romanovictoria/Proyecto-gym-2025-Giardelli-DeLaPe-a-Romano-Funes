@@ -3,10 +3,10 @@ import '@styles/Activities.css'
 import { showToast } from '../components/Toast';
 
 const AdminActivities = () => {
-    const [activities, setActivities] = useState([]);
-    const [showCreateForm, setShowCreateForm] = useState(false);
-    const [editingActivity, setEditingActivity] = useState(null);
-    const [formData, setFormData] = useState({
+    const [actividades, setActividades] = useState([]);
+    const [crearActividad, setCrearActividad] = useState(false);
+    const [editarActividad, setEditarActividad] = useState(null);
+    const [contenidoActividad, setContenidoActividad] = useState({
         nombre: '',
         descripcion: '',
         cupo: '',
@@ -15,15 +15,15 @@ const AdminActivities = () => {
     });
 
     useEffect(() => {
-        fetchActivities();
+        fetchActividades();
     }, []);
 
-    const fetchActivities = () => {
+    function fetchActividades() {
         fetch('http://localhost:8080/actividad')
             .then((res) => res.json())
-            .then((data) => setActivities(data))
-            .catch((err) => console.error('Error fetching activities:', err));
-    };
+            .then((data) => setActividades(data))
+            .catch((err) => console.error('Error fetching actividades:', err));
+    }
 
     const handleDelete = async (activityId) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar esta actividad?')) {
@@ -37,7 +37,7 @@ const AdminActivities = () => {
 
                 if (response.ok) {
                     showToast('Actividad eliminada exitosamente');
-                    fetchActivities();
+                    fetchActividades();
                 } else {
                     showToast('Error al eliminar la actividad', 'error');
                 }
@@ -49,25 +49,25 @@ const AdminActivities = () => {
     };
 
     const handleEdit = (activity) => {
-        setEditingActivity(activity);
-        setFormData({
+        setEditarActividad(activity);
+        setContenidoActividad({
             nombre: activity.nombre,
             descripcion: activity.descripcion,
             cupo: activity.cupo,
             categoria: activity.categoria || '',
             horarios: activity.horarios || []
         });
-        setShowCreateForm(true);
+        setCrearActividad(true);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const url = editingActivity
-            ? `http://localhost:8080/actividad/${editingActivity.id}`
+        const url = editarActividad
+            ? `http://localhost:8080/actividad/${editarActividad.id}`
             : 'http://localhost:8080/actividad';
 
-        const method = editingActivity ? 'PUT' : 'POST';
+        const method = editarActividad ? 'PUT' : 'POST';
 
         try {
             const response = await fetch(url, {
@@ -76,15 +76,15 @@ const AdminActivities = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(contenidoActividad)
             });
 
             if (response.ok) {
-                showToast(editingActivity ? 'Actividad actualizada' : 'Actividad creada');
-                setShowCreateForm(false);
-                setEditingActivity(null);
-                setFormData({ nombre: '', descripcion: '', cupo: '', categoria: '', horarios: [] });
-                fetchActivities();
+                showToast(editarActividad ? 'Actividad actualizada' : 'Actividad creada');
+                setCrearActividad(false);
+                setEditarActividad(null);
+                setContenidoActividad({ nombre: '', descripcion: '', cupo: '', categoria: '', horarios: [] });
+                fetchActividades();
             } else {
                 showToast('Error al guardar la actividad', 'error');
             }
@@ -96,7 +96,7 @@ const AdminActivities = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
+        setContenidoActividad(prev => ({
             ...prev,
             [name]: value
         }));
@@ -110,61 +110,37 @@ const AdminActivities = () => {
                 <h2>Gestión de Actividades - Admin</h2>
                 <button
                     className="create-button"
-                    onClick={() => setShowCreateForm(!showCreateForm)}
+                    onClick={() => setCrearActividad(!crearActividad)}
                 >
-                    {showCreateForm ? 'Cancelar' : 'Nueva Actividad'}
+                    {crearActividad ? 'Cancelar' : 'Nueva Actividad'}
                 </button>
             </div>
 
-            {showCreateForm && (
+            {crearActividad && (
                 <div className="create-form-container">
                     <form onSubmit={handleSubmit} className="activity-form">
-                        <h3>{editingActivity ? 'Editar Actividad' : 'Crear Nueva Actividad'}</h3>
+                        <h3>{editarActividad ? 'Editar Actividad' : 'Crear Nueva Actividad'}</h3>
+
+                        <input type="text" name="nombre"
+                            placeholder="Nombre de la actividad" value={contenidoActividad.nombre} onChange={handleInputChange} required />
+
+                        <textarea name="descripcion" placeholder="Descripción" value={contenidoActividad.descripcion} onChange={handleInputChange} required />
 
                         <input
-                            type="text"
-                            name="nombre"
-                            placeholder="Nombre de la actividad"
-                            value={formData.nombre}
-                            onChange={handleInputChange}
-                            required
-                        />
+                            type="number" name="cupo" placeholder="Cupo máximo" value={contenidoActividad.cupo} onChange={handleInputChange} required />
 
-                        <textarea
-                            name="descripcion"
-                            placeholder="Descripción"
-                            value={formData.descripcion}
-                            onChange={handleInputChange}
-                            required
-                        />
-
-                        <input
-                            type="number"
-                            name="cupo"
-                            placeholder="Cupo máximo"
-                            value={formData.cupo}
-                            onChange={handleInputChange}
-                            required
-                        />
-
-                        <input
-                            type="text"
-                            name="categoria"
-                            placeholder="Categoría"
-                            value={formData.categoria}
-                            onChange={handleInputChange}
-                        />
+                        <input type="text" name="categoria" placeholder="Categoría" value={contenidoActividad.categoria} onChange={handleInputChange} />
 
                         <div className="form-buttons">
                             <button type="submit">
-                                {editingActivity ? 'Actualizar' : 'Crear'}
+                                {editarActividad ? 'Actualizar' : 'Crear'}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => {
-                                    setShowCreateForm(false);
-                                    setEditingActivity(null);
-                                    setFormData({ nombre: '', descripcion: '', cupo: '', categoria: '', horarios: [] });
+                                    setCrearActividad(false);
+                                    setEditarActividad(null);
+                                    setContenidoActividad({ nombre: '', descripcion: '', cupo: '', categoria: '', horarios: [] });
                                 }}
                             >
                                 Cancelar
@@ -175,7 +151,7 @@ const AdminActivities = () => {
             )}
 
             <div className="activities-grid">
-                {activities.map((activity, index) => (
+                {actividades.map((activity, index) => (
                     <div className="activity-card admin-card" key={index}>
                         <h3>{activity.nombre}</h3>
                         <p>{activity.descripcion}</p>
@@ -190,16 +166,10 @@ const AdminActivities = () => {
                         </ul>
 
                         <div className="admin-buttons">
-                            <button
-                                className="edit-button"
-                                onClick={() => handleEdit(activity)}
-                            >
+                            <button className="edit-button" onClick={() => handleEdit(activity)}  >
                                 Editar
                             </button>
-                            <button
-                                className="delete-button"
-                                onClick={() => handleDelete(activity.id)}
-                            >
+                            <button className="delete-button" onClick={() => handleDelete(activity.id)} >
                                 Eliminar
                             </button>
                         </div>
