@@ -1,6 +1,7 @@
 import "@styles/Home.css";
 import { useState, useEffect } from "react";
 import { showToast } from "../components/Toast";
+import NavBar from "../components/NavBar";
 
 const Home = () => {
   const [actividades, setActividades] = useState([]);
@@ -70,6 +71,7 @@ const Home = () => {
 
   return (
     <div>
+      <NavBar />
       <h2>¡Bienvenido a la Página de Inicio de Vital Gym!</h2>
       <p>Explora nuestras actividades y planes.</p>
 

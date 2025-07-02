@@ -10,6 +10,7 @@ import Categoria from "../pages/FiltroCategoria";
 import Horario from "../pages/FiltroHorario";
 import Detalle from "../pages/activityDetail";
 import MisActividades from "../pages/misActividades";
+import NavBar from "../components/NavBar";
 
 // Componente para proteger rutas de admin
 const AdminRoute = ({ children }) => {

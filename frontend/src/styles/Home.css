@@ -50,7 +50,6 @@ body {
 }
 
 .read-the-docs {
-<<<<<<< HEAD
   color: #5230ed;
 }
 
@@ -66,29 +65,4 @@ body {
 
 .actividad_filtros {
   margin-Bottom: '20px'
-=======
-  color: #4a90e2;
-}
-
-.acti_filtro {
-  margin-bottom: '15px';
-}
-
-.actividad_filtros {
-  margin-bottom: '20px';
-}
-
-.filtro_input {
-  margin-right: '10px';
-  padding: '5px';
-}
-
-.button_buscar {
-  margin-right: '20px';
-  padding: '5px 10px';
-}
-
-.button_detalles {
-  padding: '5px 10px';
->>>>>>> 9711e85b61875286270a5d2d03b3c6fc2f3f8587
 }
