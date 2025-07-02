@@ -12,10 +12,7 @@ import (
 )
 
 func RegistrarInscripcion(c *gin.Context) {
-	var request struct {
-		Inscripcion dto.InscripcionDto `json:"inscripcion"`
-		Token       string             `json:"token"`
-	}
+	var request dto.VerificacionRequest
 	err := c.BindJSON(&request)
 
 	// Error Parsing json param

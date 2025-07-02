@@ -3,6 +3,7 @@ package actividadController
 import (
 	"Proyecto-gym/dto"
 	service "Proyecto-gym/services"
+	"Proyecto-gym/utils"
 	"net/http"
 	"strconv"
 
@@ -37,7 +38,6 @@ func GetActividadById(c *gin.Context) {
 
 func ActividadInsert(c *gin.Context) {
 	var verificarDto dto.VerificacionRequest
-	var actividadDto dto.ActividadDto
 	err := c.BindJSON(&verificarDto)
 
 	// Error Parsing json param
@@ -46,27 +46,63 @@ func ActividadInsert(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-
-	if verificarDto.Verificar {
-		actividadDto = verificarDto.Actividad
-		actividadDto, er := service.ActividadService.InsertActividad(actividadDto)
-		// Error del Insert
-		if er != nil {
-			c.JSON(er.Status(), er)
-			return
+	_, errr := utils.ValidateJWT(verificarDto.Token)
+	if errr == nil {
+		if verificarDto.Verificar {
+			actividadDto, er := service.ActividadService.InsertActividad(verificarDto.Actividad)
+			// Error del Insert
+			if er != nil {
+				c.JSON(er.Status(), er)
+				return
+			}
+			c.JSON(http.StatusCreated, actividadDto)
+		} else {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "La verificación fue denegada."})
 		}
-		c.JSON(http.StatusCreated, actividadDto)
 	} else {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "La verificación fue denegada."})
+		log.Error("Error validating JWT: ", errr.Error())
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Token inválido o expirado"})
 	}
+
 }
 
 func PutActividadById(c *gin.Context) {
 	log.Debug("Actividad id to load: " + c.Param("id"))
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	var actividadDto dto.ActividadDto
-	err := c.BindJSON(&actividadDto)
+	var verificarDto dto.VerificacionRequest
+	err := c.BindJSON(&verificarDto)
+
+	if err != nil {
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+	_, errr := utils.ValidateJWT(verificarDto.Token)
+	if errr == nil {
+		if verificarDto.Verificar {
+			actividadDto, er := service.ActividadService.PutActividadById(id, verificarDto.Actividad)
+			if er != nil {
+				c.JSON(er.Status(), er)
+				return
+			}
+
+			c.JSON(http.StatusOK, actividadDto)
+		} else {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "La verificación fue denegada."})
+		}
+	} else {
+		log.Error("Error validating JWT: ", errr.Error())
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Token inválido o expirado"})
+	}
+}
+
+func DeleteActividadById(c *gin.Context) {
+	log.Debug("Actividad id to load: " + c.Param("id"))
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	var verificarDto dto.VerificacionRequest
+	err := c.BindJSON(&verificarDto)
 
 	if err != nil {
 		log.Error(err.Error())
@@ -74,24 +110,15 @@ func PutActividadById(c *gin.Context) {
 		return
 	}
 
-	actividadDto, er := service.ActividadService.PutActividadById(id, actividadDto)
-	if er != nil {
-		c.JSON(er.Status(), er)
-		return
+	if verificarDto.Verificar {
+		er := service.ActividadService.DeleteActividadById(id)
+		if er != nil {
+			c.JSON(er.Status(), er)
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"Alerta": "Actividad eliminada correctamente"})
+	} else {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "La verificación fue denegada."})
 	}
 
-	c.JSON(http.StatusOK, actividadDto)
-}
-
-func DeleteActividadById(c *gin.Context) {
-	log.Debug("Actividad id to load: " + c.Param("id"))
-	id, _ := strconv.Atoi(c.Param("id"))
-
-	err := service.ActividadService.DeleteActividadById(id)
-
-	if err != nil {
-		c.JSON(err.Status(), err)
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"Alerta": "Actividad eliminada correctamente"})
 }

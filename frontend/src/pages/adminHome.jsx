@@ -18,7 +18,7 @@ const AdminHome = () => {
     const fetchData = async () => {
         try {
             // Obtener actividades
-            const actividadesRes = await fetch("http://localhost:8080/home");
+            const actividadesRes = await fetch("http://localhost:8080/actividad");
             const actividadesData = await actividadesRes.json();
             setActividades(actividadesData);
 
@@ -123,7 +123,7 @@ const AdminHome = () => {
             <div className="admin-navigation" style={{ marginBottom: '30px' }}>
                 <button
                     onClick={() => window.location.href = '/admin/activities'}
-                    style={{
+                    style={{ // TODO PASAR A OTRO ARCHIVO
                         padding: '10px 20px',
                         margin: '0 10px',
                         backgroundColor: '#007bff',
@@ -137,7 +137,7 @@ const AdminHome = () => {
                 </button>
                 <button
                     onClick={() => window.location.href = '/admin/users'}
-                    style={{
+                    style={{ // TODO PASAR A OTRO ARCHIVO
                         padding: '10px 20px',
                         margin: '0 10px',
                         backgroundColor: '#28a745',
@@ -172,7 +172,7 @@ const AdminHome = () => {
 
                                 <div className="admin-actions" style={{ marginTop: '10px' }}>
                                     <button
-                                        onClick={() => window.location.href = `/admin/activity/${actividad.id}/edit`}
+                                        onClick={() => window.location.href = `/admin/activity/${actividad.id}/edit`} // TODO
                                         style={{
                                             padding: '5px 10px',
                                             marginRight: '10px',
@@ -199,7 +199,7 @@ const AdminHome = () => {
                                         Eliminar
                                     </button>
                                     <button
-                                        onClick={() => window.location.href = `/admin/activity/${actividad.id}/inscriptions`}
+                                        onClick={() => window.location.href = `/admin/activity/${actividad.id}/inscriptions`} // TODO
                                         style={{
                                             padding: '5px 10px',
                                             marginLeft: '10px',
