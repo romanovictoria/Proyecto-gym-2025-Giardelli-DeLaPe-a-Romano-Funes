@@ -4,10 +4,13 @@ import { showToast } from '../components/Toast';
 import NavBar from '../components/NavBar';
 
 
+
 const AdminActivities = () => {
     const [actividades, setActividades] = useState([]);
     const [crearActividad, setCrearActividad] = useState(false);
     const [editarActividad, setEditarActividad] = useState(null);
+    const [nombre, setNombre] = useState("");
+    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
     const [contenidoActividad, setContenidoActividad] = useState({
         nombre: '',
         descripcion: '',
@@ -130,9 +133,11 @@ const AdminActivities = () => {
 
                         <input
                             type="number" name="cupo" placeholder="Cupo máximo" value={contenidoActividad.cupo} onChange={handleInputChange} required />
-
-                        <input type="text" name="categoria" placeholder="Categoría" value={contenidoActividad.categoria} onChange={handleInputChange} />
-
+                        <select
+                            value={categoriaSeleccionada}
+                            onChange={e => setCategoriaSeleccionada(e.target.value)}
+                        >
+                            <option value="">Todas las categorías</option></select>
                         <div className="form-buttons">
                             <button type="submit">
                                 {editarActividad ? 'Actualizar' : 'Crear'}
