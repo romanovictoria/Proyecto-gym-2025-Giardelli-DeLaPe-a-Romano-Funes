@@ -21,7 +21,7 @@ const Home = () => {
 
   const fetchActividad = async () => {
     try {
-      const response = await fetch("http://localhost:8080/home");
+      const response = await fetch("http://localhost:8080/actividad");
       const data = await response.json();
       console.log(data)
       setActividades(data);
@@ -78,45 +78,46 @@ const Home = () => {
 
       {/* Barra de búsqueda con botones */}
       <div className="actividad_filtros">
-        {/* Filtro por nombre */}
-        <input
-          type="text"
-          placeholder="Buscar por nombre"
-          className="filtro_input"
-          id="nombre"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-        />
-        <button
-          className="buscarButton"
-          onClick={() =>
-            window.location.href = `/home/${document.getElementById('nombre').value}`
-          }
-        >
-          Buscar
-        </button>
-        <select
-          value={categoriaSeleccionada}
-          onChange={(e) => setCategoriaSeleccionada(e.target.value)}
-          className="filtro_input"
-          id="categoriaInput"
-        >
-          <option value="">Selecciona una categoría</option>
-          {categorias.map((categoria) => (
-            <option key={categoria.id} value={categoria.nombre}>
-              {categoria.nombre}
-            </option>
-          ))}
-        </select>
-        <button
-          className="buscarButton"
-          onClick={() =>
-            window.location.href = `/home/categoria/${categoriaSeleccionada}`
-          }
-        >
-          Buscar
-        </button>
-      </div>
+  {/* Filtro por nombre */}
+  <input
+    type="text"
+    placeholder="Buscar por nombre"
+    className="filtro_input"
+    id="nombre"
+    value={nombre}
+    onChange={(e) => setNombre(e.target.value)}
+  />
+  
+  <select
+    value={categoriaSeleccionada}
+    onChange={(e) => setCategoriaSeleccionada(e.target.value)}
+    className="filtro_input"
+    id="categoriaInput"
+  >
+    <option value="">Selecciona una categoría</option>
+    {categorias.map((categoria) => (
+      <option key={categoria.id} value={categoria.nombre}>
+        {categoria.nombre}
+      </option>
+    ))}
+  </select>
+  
+  <button
+    className="buscarButton"
+    onClick={() => {
+      let url = "/home";
+      if (nombre.trim() !== "") {
+        url = `/home/${nombre.trim()}`;
+      } else if (categoriaSeleccionada !== "") {
+        url = `/home/categoria/${categoriaSeleccionada}`;
+      }
+      window.location.href = url;
+    }}
+  >
+    Buscar
+  </button>
+</div>
+
 
       <div className="actividad_caracteristica">
         <h2>Todas las Actividades</h2>
@@ -126,7 +127,7 @@ const Home = () => {
               <li key={actividad.id} className="acti_filtro">
                 <p><strong>Título:</strong> {actividad.nombre}</p>
                 <p><strong>Horario:</strong> {new Date(actividad.horario * 1000).toLocaleString()}</p>
-                <p>Profesor: {actividad.usuario_nombre}</p>
+                <p><strong>Profesor:</strong> {actividad.usuario_nombre}</p>
                 <button
                   onClick={() => window.location.href = `/home/id/${actividad.id}`}
                   className="button_detalles"
