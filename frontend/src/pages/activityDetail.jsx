@@ -2,6 +2,7 @@ import "@styles/Home.css";
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { showToast } from "../components/Toast";
+import NavBar from "../components/NavBar";
 import "../styles/Activities.css";
 
 const FitroId = () => {
@@ -56,8 +57,8 @@ const FitroId = () => {
 
   return (
     <div>
-      <NavBar />
       <div>
+        <NavBar />
         <h2>¡Bienvenido a la Página de Inicio de Vital Gym!</h2>
         <p>Explora nuestras actividades y planes.</p>
       </div>

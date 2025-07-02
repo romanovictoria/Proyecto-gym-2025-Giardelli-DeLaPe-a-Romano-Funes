@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '@styles/Activities.css'
 import { showToast } from '../components/Toast';
-import NavBar from '../components/NavBar';
-
-
+import NavBar from "../components/NavBar";
 
 const AdminActivities = () => {
     const [actividades, setActividades] = useState([]);
@@ -14,7 +12,7 @@ const AdminActivities = () => {
     const [contenidoActividad, setContenidoActividad] = useState({
         nombre: '',
         descripcion: '',
-        cupo: '',
+        cupo: 0,
         categoria: '',
         horarios: []
     });
@@ -35,9 +33,7 @@ const AdminActivities = () => {
             try {
                 const response = await fetch(`http://localhost:8080/actividad/${activityId}`, {
                     method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
+                    headers: {}
                 });
 
                 if (response.ok) {
@@ -67,7 +63,21 @@ const AdminActivities = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        const bodyActividad = {
+            actividad: {
+            nombre: contenidoActividad.nombre,
+            descripcion: contenidoActividad.descripcion,
+            cupo: parseInt(contenidoActividad.cupo),
+            categoria: parseInt(contenidoActividad.categoria),
+            horarios: contenidoActividad.horarios
+            },
+            verificar: false,
+            token: localStorage.getItem("token"),
+        };
+        if (localStorage.getItem("isAdmin") == "true") {
+            bodyActividad.verificar = true
+        }
+        console.log(bodyActividad)
         const url = editarActividad
             ? `http://localhost:8080/actividad/${editarActividad.id}`
             : 'http://localhost:8080/actividad';
@@ -78,10 +88,9 @@ const AdminActivities = () => {
             const response = await fetch(url, {
                 method: method,
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(contenidoActividad)
+                body: JSON.stringify(bodyActividad)
             });
 
             if (response.ok) {

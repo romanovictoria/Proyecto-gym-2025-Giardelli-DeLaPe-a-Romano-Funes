@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { showToast } from "../components/Toast";
+import NavBar from "../components/NavBar";
 
 const MisActividades = () => {
     const [actividades, setActividades] = useState([]);
@@ -22,6 +23,7 @@ const MisActividades = () => {
 
     return (
         <div className="mis-actividades">
+            <NavBar />
             <h2>Mis actividades</h2>
             {actividades.length === 0 ? (
                 <p>No estás inscripto en ninguna actividad.</p>

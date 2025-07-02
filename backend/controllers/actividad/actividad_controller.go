@@ -100,25 +100,10 @@ func PutActividadById(c *gin.Context) {
 func DeleteActividadById(c *gin.Context) {
 	log.Debug("Actividad id to load: " + c.Param("id"))
 	id, _ := strconv.Atoi(c.Param("id"))
-
-	var verificarDto dto.VerificacionRequest
-	err := c.BindJSON(&verificarDto)
-
-	if err != nil {
-		log.Error(err.Error())
-		c.JSON(http.StatusBadRequest, err.Error())
+	er := service.ActividadService.DeleteActividadById(id)
+	if er != nil {
+		c.JSON(er.Status(), er)
 		return
 	}
-
-	if verificarDto.Verificar {
-		er := service.ActividadService.DeleteActividadById(id)
-		if er != nil {
-			c.JSON(er.Status(), er)
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"Alerta": "Actividad eliminada correctamente"})
-	} else {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "La verificación fue denegada."})
-	}
-
+	c.JSON(http.StatusOK, gin.H{"Alerta": "Actividad eliminada correctamente"})
 }

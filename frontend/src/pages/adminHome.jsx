@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import NavBar from "../components/NavBar";
 import '@styles/Home.css';
 import NavBar from '../components/NavBar';
 
@@ -18,7 +19,7 @@ const AdminHome = () => {
 
     const fetchInscripcionesPorActividad = async (actividadId) => {
         try {
-            const response = await fetch(`http://localhost:8080/inscripciones/${actividadId}`);
+            const response = await fetch(`http://localhost:8080/inscripcion/${actividadId}`);
             if (!response.ok) {
                 throw new Error("No se pudieron obtener las inscripciones");
             }
@@ -42,7 +43,7 @@ const AdminHome = () => {
             setActividades(actividadesData);
 
             // Usuarios
-            const usuariosRes = await fetch("http://localhost:8080/usuarios");
+            const usuariosRes = await fetch("http://localhost:8080/usuario");
             const usuariosData = await usuariosRes.json();
             setUsuarios(usuariosData);
 
@@ -159,7 +160,7 @@ const AdminHome = () => {
             </div>
 
             <div>
-                <h2>Administrador</h2>
+                <h2>Actividades Inscripciones</h2>
                 <ul>
                     {actividades.map((actividad) => (
                         <li key={actividad.id}>
