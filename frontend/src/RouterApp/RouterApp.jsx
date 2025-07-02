@@ -42,6 +42,7 @@ const RouterApp = () => {
                 <Route element={<PublicLayout />}>
                     <Route path="/login" element={<Login />} />
                     <Route path="*" element={<Navigate to="/login" />} />
+                    <Route path="/" element={<NavBar />} />
                 </Route>
 
                 {/* Rutas privadas para usuarios regulares */}
