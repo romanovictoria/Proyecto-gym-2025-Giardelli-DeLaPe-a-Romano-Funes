@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '@styles/Activities.css'
 import { showToast } from '../components/Toast';
+import NavBar from '../components/NavBar';
 
 
 const AdminActivities = () => {

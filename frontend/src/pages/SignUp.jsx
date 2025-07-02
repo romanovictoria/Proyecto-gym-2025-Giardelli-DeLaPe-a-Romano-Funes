@@ -18,47 +18,47 @@ const SignUp = () => {
       ...prev,
       [e.target.name]: e.target.value,
     }));
-   
+
 
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  const bodyLogin = JSON.stringify({
+    e.preventDefault();
+    const bodyLogin = JSON.stringify({
       email: formData.email,
       password: formData.password,
     });
-  const body = {
-    usuario: {
-      nombre: formData.name,
-      apellido: formData.lastName,
-      email: formData.email,
-      rol: false,
-    },
-    password: formData.password,
-  };
-
-  try {
-    const response = await fetch("http://localhost:8080/usuario", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const body = {
+      usuario: {
+        nombre: formData.name,
+        apellido: formData.lastName,
+        email: formData.email,
+        rol: false,
       },
-      body: JSON.stringify(body),
-    });
+      password: formData.password,
+    };
 
-    if (response.ok) {
-      showToast("Usuario creado correctamente", "success");
-      // await new Promise((resolve) => setTimeout(resolve, 10000));
-      // navigate("/home");
-    } else {
-      const errorData = await response.json();
-      showToast(errorData.message || "Error al registrar el usuario", "error");
+    try {
+      const response = await fetch("http://localhost:8080/usuario", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        showToast("Usuario creado correctamente", "success");
+        // await new Promise((resolve) => setTimeout(resolve, 10000));
+        // navigate("/home");
+      } else {
+        const errorData = await response.json();
+        showToast(errorData.message || "Error al registrar el usuario", "error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-  const loginResponse = await fetch("http://localhost:8080/login", {
+    const loginResponse = await fetch("http://localhost:8080/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +74,7 @@ const SignUp = () => {
       showToast("Bienvenido");
       navigate("/home");
     }
-};
+  };
 
 
   return (
@@ -115,6 +115,10 @@ const SignUp = () => {
         />
         <button type="submit">Registrarse</button>
       </form>
+      <a>¿Ya estás registrado? Inicia sesión</a>
+      <button className="login-button" onClick={() => navigate("/login")}>
+        Iniciar Sesión
+      </button>
     </div>
   );
 };
